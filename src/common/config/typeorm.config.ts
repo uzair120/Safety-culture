@@ -3,6 +3,7 @@ import {
   TypeOrmModuleAsyncOptions,
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
+import { GlobalSubscribers } from 'subscribers/global.subscriber';
 import { CONSTANTS } from '../../app.constants';
 import DatabaseLogger from '../../databaseLogger';
 
@@ -34,13 +35,15 @@ export default class TypeOrmConfig {
           },
         ],
       },
-
+      migrations: [__dirname + '/../../**/migrations/*{.ts,.js}'],
       entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-      synchronize: isDevelopmentEnv,
+      synchronize: false,
       logging: isDevelopmentEnv,
+      migrationsRun: true,
       // keepConnectionAlive: isDevelopmentEnv,
       // namingStrategy: new TypeOrmNamingStrategy(),
 
+      subscribers: [...GlobalSubscribers],
       // Timezone configured on the MySQL server. This is used to typecast server date/time values to JavaScript Date object and vice versa.
       keepConnectionAlive: nodeEnv == CONSTANTS.ENVIRONMENT.TEST ? true : false,
       // debug: isDevelopmentEnv,
