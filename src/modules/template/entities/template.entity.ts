@@ -30,6 +30,11 @@ export class Template extends CustomBaseEntity {
   @MaxLength(500)
   description?: string;
 
+  @Column({ type: 'varchar', length: 600, nullable: true })
+  @IsOptional()
+  @IsString()
+  image: string;
+
   @Column({ type: 'int', nullable: true })
   @IsNumber()
   @IsOptional()
