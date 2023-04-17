@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import {
   IsBoolean,
@@ -17,6 +18,7 @@ import { Template } from '../../template/entities/template.entity';
 
 import { TemplateItemType } from '../enums';
 import { CustomBaseEntity } from 'src/common';
+import { Question } from 'src/modules/questions/entities/question.entity';
 
 @Entity({ name: 'template_items' })
 export class TemplateItem extends CustomBaseEntity {
@@ -81,4 +83,7 @@ export class TemplateItem extends CustomBaseEntity {
     name: 'template_id',
   })
   template: Template;
+
+  @OneToMany(() => Question, (question) => question.item)
+  questions: Question[];
 }

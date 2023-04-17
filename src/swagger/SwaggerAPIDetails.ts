@@ -72,3 +72,28 @@ export const GET_ALL_WIDGETS = {
   summary: 'Get all widgets',
   description: '',
 };
+
+export const POST_CREATE_QUESTION = {
+  summary: 'Creates a new question',
+  description: '',
+};
+
+export const PATCH_UPDATE_QUESTION = {
+  summary: 'Updates a question',
+  description: '',
+};
+
+export const DELETE_QUESTION = {
+  summary: 'Deletes a question',
+  description: '',
+};
+
+export const GET_QUESTION = {
+  summary: 'Get a question',
+  description: '',
+};
+
+export const GET_ALL_QUESTIONS = {
+  summary: 'Get all questions',
+  description: '',
+};

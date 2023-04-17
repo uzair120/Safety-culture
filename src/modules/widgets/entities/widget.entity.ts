@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
+import { Question } from 'src/modules/questions/entities/question.entity';
 
 @Entity({ name: 'widgets' })
 export class Widget extends CustomBaseEntity {
@@ -20,4 +21,7 @@ export class Widget extends CustomBaseEntity {
   @Column({ type: 'boolean', default: false })
   @IsBoolean()
   disabled: boolean;
+
+  @OneToMany(() => Question, (question) => question.widget)
+  questions: Question[];
 }
