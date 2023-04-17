@@ -119,7 +119,7 @@ export class TemplateService {
       const template = await this.templateRepository.findOne({ where: { id } });
 
       if (template) {
-        await this.templateRepository.delete(id);
+        await this.templateRepository.softDelete(id);
         this.logger.log(`Deleted template with id ${id} successfully`);
         return constructSuccessResponse(true);
       }
