@@ -1,0 +1,27 @@
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { CustomBaseEntity } from 'src/common/entity/base.entity';
+import { Question } from '../../questions/entities/question.entity';
+
+@Entity({ name: 'widgets_values' })
+export class WidgetValue extends CustomBaseEntity {
+  @PrimaryColumn({ name: 'question_id', type: 'int', unsigned: true })
+  questionId: number;
+
+  @PrimaryColumn({ name: 'attribute_name', type: 'varchar', length: 255 })
+  @IsString()
+  @IsNotEmpty()
+  attributeName: string;
+
+  @Column({ name: 'attribute_value', type: 'varchar', length: 255 })
+  @IsString()
+  @IsNotEmpty()
+  attributeValue: string;
+
+  @ManyToOne(() => Question, (question) => question.values, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question_id' })
+  question: Question;
+}
