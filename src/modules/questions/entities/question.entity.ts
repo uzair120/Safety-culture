@@ -3,12 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
 import { TemplateItem } from '../../template-items/entities/template-item.entity';
 import { Widget } from '../../widgets/entities/widget.entity';
+import { WidgetValue } from 'src/modules/widget_values/entities/widget_value.entity';
 
 @Entity({ name: 'questions' })
 export class Question extends CustomBaseEntity {
@@ -45,4 +47,7 @@ export class Question extends CustomBaseEntity {
   })
   @JoinColumn({ name: 'widget_id' })
   widget: Widget;
+
+  @OneToMany(() => WidgetValue, (widgetValue) => widgetValue.question)
+  values: WidgetValue[];
 }

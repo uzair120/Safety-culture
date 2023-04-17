@@ -97,3 +97,28 @@ export const GET_ALL_QUESTIONS = {
   summary: 'Get all questions',
   description: '',
 };
+
+export const GET_ALL_WIDGET_VALUES = {
+  summary: 'Get all widget values',
+  description: '',
+};
+
+export const GET_WIDGET_VALUE = {
+  summary: 'Get a widget value',
+  description: '',
+};
+
+export const POST_CREATE_WIDGET_VALUE = {
+  summary: 'Creates a new widget value',
+  description: '',
+};
+
+export const PUT_UPDATE_WIDGET_VALUE = {
+  summary: 'Updates a widget value',
+  description: '',
+};
+
+export const DELETE_WIDGET_VALUE = {
+  summary: 'Deletes a widget value',
+  description: '',
+};
