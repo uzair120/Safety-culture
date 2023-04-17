@@ -20,6 +20,11 @@ export class CreateTemplateDto {
   description?: string;
 
   @ApiProperty()
+  @IsOptional()
+  @IsString()
+  image?: string;
+
+  @ApiProperty()
   @IsNumber()
   business_id: number;
 

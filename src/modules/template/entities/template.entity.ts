@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -8,6 +8,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
+import { TemplateItem } from 'src/modules/template-items/entities/template-item.entity';
 
 @Entity({ name: 'template' })
 export class Template extends CustomBaseEntity {
@@ -30,6 +31,11 @@ export class Template extends CustomBaseEntity {
   @MaxLength(500)
   description?: string;
 
+  @Column({ type: 'varchar', length: 600, nullable: true })
+  @IsOptional()
+  @IsString()
+  image: string;
+
   @Column({ type: 'int', nullable: true })
   @IsNumber()
   @IsOptional()
@@ -48,4 +54,7 @@ export class Template extends CustomBaseEntity {
   @Column({ type: 'boolean', default: false })
   @IsBoolean()
   published: boolean;
+
+  @OneToMany(() => TemplateItem, (item) => item.template)
+  templateItems: TemplateItem[];
 }

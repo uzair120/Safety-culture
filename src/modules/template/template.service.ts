@@ -8,6 +8,7 @@ import {
   constructErrorResponse,
   ResponseDto,
 } from '../../common';
+import { FetchTemplateCriteria } from './interfaces/fetchTemplateCriteria.interface';
 
 @Injectable()
 export class TemplateService {
@@ -118,7 +119,7 @@ export class TemplateService {
       const template = await this.templateRepository.findOne({ where: { id } });
 
       if (template) {
-        await this.templateRepository.delete(id);
+        await this.templateRepository.softDelete(id);
         this.logger.log(`Deleted template with id ${id} successfully`);
         return constructSuccessResponse(true);
       }
@@ -134,6 +135,37 @@ export class TemplateService {
         error.stack,
       );
       return constructErrorResponse(error);
+    }
+  }
+
+  async findByCriteria(criteria: FetchTemplateCriteria): Promise<ResponseDto> {
+    this.logger.log(`Fetching template with criteria ${criteria}`);
+
+    try {
+      const data = this.templateRepository.find({ where: criteria });
+
+      if (!data) {
+        this.logger.warn(`Template with criteria ${criteria} not found`);
+        return constructErrorResponse({
+          status: HttpStatus.NOT_FOUND,
+          message: 'Template not found',
+        });
+      }
+
+      this.logger.log(
+        `Fetched template with criteria ${criteria} successfully`,
+      );
+      return constructSuccessResponse(data);
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while fetching template with criteria ${criteria}`,
+        error.stack,
+      );
+      return constructErrorResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'An error occurred while fetching the template',
+        error: error.message,
+      });
     }
   }
 }

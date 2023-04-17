@@ -20,6 +20,11 @@ export class UpdateTemplateDto {
   @ApiProperty()
   description?: string;
 
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  image?: string;
+
   @IsOptional()
   @IsNumber()
   @ApiProperty()
