@@ -15,6 +15,7 @@ export class createTemplateTable1681702265032 implements MigrationInterface {
               created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
               updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
               deleted_at TIMESTAMP(6) NULL DEFAULT NULL
+              
         )`,
     );
     await queryRunner.query(`
