@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
-import { CustomBaseEntity } from 'src/common/entity/base.entity';
-import { Question } from 'src/modules/questions/entities/question.entity';
+import { CustomBaseEntity } from '../../../common/entity/base.entity';
+import { Question } from '../../../modules/questions/entities/question.entity';
 
 @Entity({ name: 'widgets' })
 export class Widget extends CustomBaseEntity {

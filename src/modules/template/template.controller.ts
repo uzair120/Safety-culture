@@ -1,29 +1,18 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
 
-import { ResponseDto } from 'src/common';
-import {
-  SwaggerController,
-  SwaggerSuccessResponse,
-} from 'src/swagger/decorators';
+import { ResponseDto } from '../../common';
+import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_TEMPLATE,
   GET_ALL_TEMPLATES,
   GET_TEMPLATE,
   PATCH_UPDATE_TEMPLATE,
   POST_CREATE_TEMPLATE,
-} from 'src/swagger/SwaggerAPIDetails';
+} from '../../swagger/SwaggerAPIDetails';
 
 @SwaggerController('Template')
 @Controller('template')
@@ -50,10 +39,7 @@ export class TemplateController {
 
   @SwaggerSuccessResponse(UpdateTemplateDto, PATCH_UPDATE_TEMPLATE)
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateTemplateDto: UpdateTemplateDto,
-  ): Promise<ResponseDto> {
+  update(@Param('id') id: number, @Body() updateTemplateDto: UpdateTemplateDto): Promise<ResponseDto> {
     return this.templateService.update(id, updateTemplateDto);
   }
 

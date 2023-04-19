@@ -1,10 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import {
-  DocumentBuilder,
-  SwaggerCustomOptions,
-  SwaggerDocumentOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
 import { CONSTANTS } from './app.constants';
 
 export function setupSwagger(app: INestApplication): void {
@@ -20,16 +15,13 @@ export function setupSwagger(app: INestApplication): void {
       description: 'Enter Authorization token',
       in: 'header',
     })
+    .addServer(CONSTANTS.LOCAL, 'Local')
     .addServer(CONSTANTS.DEV_SERVER, 'Dev')
-    // .addServer(CONSTANTS.STAGE_SERVER, 'Stage')
-    // .addServer(CONSTANTS.PROD_SERVER, 'Production')
-    // .addServer(CONSTANTS.LOCAL, 'Local')
     .setVersion('1.0')
     .build();
 
   const swaggerDocumentOptions: SwaggerDocumentOptions = {
-    operationIdFactory: (_controllerKey: string, methodKey: string) =>
-      methodKey,
+    operationIdFactory: (_controllerKey: string, methodKey: string) => methodKey,
   };
   const swaggerDocCustomOptions: SwaggerCustomOptions = {
     customCss: `
@@ -83,15 +75,6 @@ export function setupSwagger(app: INestApplication): void {
     customSiteTitle: 'iAuditor APP API Documentation',
   };
 
-  const document = SwaggerModule.createDocument(
-    app,
-    swaggerConfig,
-    swaggerDocumentOptions,
-  );
-  SwaggerModule.setup(
-    `${CONSTANTS.BASE_ROUTE}api-docs`,
-    app,
-    document,
-    swaggerDocCustomOptions,
-  );
+  const document = SwaggerModule.createDocument(app, swaggerConfig, swaggerDocumentOptions);
+  SwaggerModule.setup(`${CONSTANTS.BASE_ROUTE}api-docs`, app, document, swaggerDocCustomOptions);
 }

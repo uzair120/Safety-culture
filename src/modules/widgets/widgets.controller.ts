@@ -1,27 +1,16 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import { ResponseDto } from 'src/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ResponseDto } from '../../common';
 import { WidgetService } from './widgets.service';
 import { CreateWidgetDto } from './dto/create-widget.dto';
 import { UpdateWidgetDto } from './dto/update-widget.dto';
-import {
-  SwaggerController,
-  SwaggerSuccessResponse,
-} from 'src/swagger/decorators';
+import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_WIDGET,
   GET_ALL_WIDGETS,
   GET_WIDGET,
   PATCH_UPDATE_WIDGET,
   POST_CREATE_WIDGET,
-} from 'src/swagger/SwaggerAPIDetails';
+} from '../../swagger/SwaggerAPIDetails';
 
 @SwaggerController('Widgets')
 @Controller('widgets')
@@ -48,10 +37,7 @@ export class WidgetsController {
 
   @SwaggerSuccessResponse(UpdateWidgetDto, PATCH_UPDATE_WIDGET)
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateWidgetDto: UpdateWidgetDto,
-  ): Promise<ResponseDto> {
+  update(@Param('id') id: number, @Body() updateWidgetDto: UpdateWidgetDto): Promise<ResponseDto> {
     return this.widgetsService.update(id, updateWidgetDto);
   }
 

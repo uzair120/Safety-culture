@@ -122,3 +122,13 @@ export const DELETE_WIDGET_VALUE = {
   summary: 'Deletes a widget value',
   description: '',
 };
+
+export const GET_ALL_GLOBAL_TEMP = {
+  summary: 'Get all Global templates',
+  description: '',
+};
+
+export const POST_CREATE_GLOBAL_TEMP = {
+  summary: 'Creates a new global template',
+  description: '',
+};
