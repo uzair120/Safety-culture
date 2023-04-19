@@ -1,12 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
 import { TemplateItem } from 'src/modules/template-items/entities/template-item.entity';
 
@@ -36,20 +29,20 @@ export class Template extends CustomBaseEntity {
   @IsString()
   image: string;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ name: 'business_id', type: 'int', nullable: true })
   @IsNumber()
   @IsOptional()
-  business_id: number;
+  businessId: number;
 
-  @Column({ type: 'int', nullable: false })
+  @Column({ name: 'created_by', type: 'int', nullable: false })
   @IsNumber()
   @IsNotEmpty()
-  created_by: number;
+  createdByy: number;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ name: 'total_score', type: 'int', nullable: true })
   @IsOptional()
   @IsNumber()
-  total_score?: number;
+  totalScore?: number;
 
   @Column({ type: 'boolean', default: false })
   @IsBoolean()

@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateTemplateDto {
   @IsOptional()
@@ -28,17 +22,17 @@ export class UpdateTemplateDto {
   @IsOptional()
   @IsNumber()
   @ApiProperty()
-  business_id?: number;
+  businessId?: number;
 
   @IsOptional()
   @IsNumber()
   @ApiProperty()
-  created_by?: number;
+  createdBy?: number;
 
   @IsOptional()
   @IsNumber()
   @ApiProperty()
-  total_score?: number;
+  totalScore?: number;
 
   @IsOptional()
   @IsBoolean()
