@@ -3,6 +3,11 @@ import { IsBoolean, IsNumber, IsOptional, IsString, MaxLength } from 'class-vali
 
 export class UpdateTemplateDto {
   @IsOptional()
+  @ApiProperty()
+  @IsNumber()
+  id: number;
+
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   @ApiProperty()
