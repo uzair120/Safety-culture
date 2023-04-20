@@ -3,7 +3,7 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
 import { TemplateItem } from 'src/modules/template-items/entities/template-item.entity';
 
-@Entity({ name: 'template' })
+@Entity({ name: 'templates' })
 export class Template extends CustomBaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
@@ -37,7 +37,7 @@ export class Template extends CustomBaseEntity {
   @Column({ name: 'created_by', type: 'int', nullable: false })
   @IsNumber()
   @IsNotEmpty()
-  createdByy: number;
+  createdBy: number;
 
   @Column({ name: 'total_score', type: 'int', nullable: true })
   @IsOptional()

@@ -62,6 +62,7 @@ export class QuestionController {
     return this.questionService.delete(id);
   }
 
+  @SwaggerSuccessResponse(UpdateQuestionDto, PATCH_UPDATE_QUESTION)
   @Get('criteria')
   findByCriteria(
     @Body() criteria: FetchQuestionCriteria,
