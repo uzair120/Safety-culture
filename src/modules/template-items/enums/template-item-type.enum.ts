@@ -1,5 +1,5 @@
 export enum TemplateItemType {
-  PAGE = 'page',
-  SECTION = 'section',
-  QUESTION = 'question',
+  PAGE = 'PAGE',
+  SECTION = 'SECTION',
+  QUESTION = 'QUESTION',
 }

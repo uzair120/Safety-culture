@@ -11,6 +11,7 @@ import { QuestionsModule } from './modules/questions/questions.module';
 import { WidgetValuesModule } from './modules/widget_values/widget_values.module';
 import { ResponsesNamesModule } from './modules/responses-names/responses-names.module';
 import { ResponsesModule } from './modules/responses/responses.module';
+import { McqsModule } from './modules/mcqs/mcqs.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ResponsesModule } from './modules/responses/responses.module';
     WidgetValuesModule,
     ResponsesNamesModule,
     ResponsesModule,
+    McqsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateTemplateDto {
   @ApiProperty()
@@ -26,16 +20,16 @@ export class CreateTemplateDto {
 
   @ApiProperty()
   @IsNumber()
-  business_id: number;
+  businessId: number;
 
   @ApiProperty()
   @IsNumber()
-  created_by: number;
+  createdBy: number;
 
   @ApiProperty()
   @IsOptional()
   @IsNumber()
-  total_score?: number;
+  totalScore?: number;
 
   @ApiProperty()
   @IsBoolean()
