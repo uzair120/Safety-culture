@@ -70,6 +70,6 @@ export class TemplateItem extends CustomBaseEntity {
   })
   template: Template;
 
-  @OneToMany(() => Question, (question) => question.item)
+  @OneToMany(() => Question, (question) => question.item, { eager: true })
   questions: Question[];
 }

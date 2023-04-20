@@ -22,6 +22,6 @@ export class Widget extends CustomBaseEntity {
   @IsBoolean()
   disabled: boolean;
 
-  @OneToMany(() => Question, (question) => question.widget)
+  @OneToMany(() => Question, (question) => question.widget, { eager: true })
   questions: Question[];
 }

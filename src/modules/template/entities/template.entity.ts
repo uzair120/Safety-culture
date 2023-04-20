@@ -1,12 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { CustomBaseEntity } from 'src/common/entity/base.entity';
 import { TemplateItem } from 'src/modules/template-items/entities/template-item.entity';
 
@@ -55,6 +48,6 @@ export class Template extends CustomBaseEntity {
   @IsBoolean()
   published: boolean;
 
-  @OneToMany(() => TemplateItem, (item) => item.template)
+  @OneToMany(() => TemplateItem, (item) => item.template, { eager: true })
   templateItems: TemplateItem[];
 }
