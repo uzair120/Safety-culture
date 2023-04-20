@@ -152,3 +152,28 @@ export const GET_RESPONSES_NAME = {
   summary: 'Get a responses name',
   description: '',
 };
+
+export const POST_CREATE_RESPONSE = {
+  summary: 'Creates a new response',
+  description: '',
+};
+
+export const PATCH_UPDATE_RESPONSE = {
+  summary: 'Updates a response',
+  description: '',
+};
+
+export const DELETE_RESPONSE = {
+  summary: 'Deletes a response',
+  description: '',
+};
+
+export const GET_RESPONSE = {
+  summary: 'Get a response',
+  description: '',
+};
+
+export const GET_ALL_RESPONSES = {
+  summary: 'Get all responses',
+  description: '',
+};

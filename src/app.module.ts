@@ -10,6 +10,7 @@ import { WidgetsModule } from './modules/widgets/widgets.module';
 import { QuestionsModule } from './modules/questions/questions.module';
 import { WidgetValuesModule } from './modules/widget_values/widget_values.module';
 import { ResponsesNamesModule } from './modules/responses-names/responses-names.module';
+import { ResponsesModule } from './modules/responses/responses.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ResponsesNamesModule } from './modules/responses-names/responses-names.
     QuestionsModule,
     WidgetValuesModule,
     ResponsesNamesModule,
+    ResponsesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
