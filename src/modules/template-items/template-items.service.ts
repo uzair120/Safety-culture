@@ -1,11 +1,7 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  constructSuccessResponse,
-  constructErrorResponse,
-  ResponseDto,
-} from '../../common';
+import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { FetchTemplateItemCriteria } from './interfaces/fetch-template-item-criteria.interface';
 import { TemplateItem } from './entities/template-item.entity';
 import { CreateTemplateItemDto, UpdateTemplateItemDto } from './dto';
@@ -19,20 +15,12 @@ export class TemplateItemService {
     private readonly templateItemRepository: Repository<TemplateItem>,
   ) {}
 
-  async create(
-    createTemplateItemDto: CreateTemplateItemDto,
-  ): Promise<ResponseDto> {
-    this.logger.log(
-      `Creating template item with title ${createTemplateItemDto.title}`,
-    );
+  async create(createTemplateItemDto: CreateTemplateItemDto): Promise<ResponseDto> {
+    this.logger.log(`Creating template item with title ${createTemplateItemDto.title}`);
 
     try {
-      const data = await this.templateItemRepository.save(
-        createTemplateItemDto,
-      );
-      this.logger.log(
-        `Template item with title ${createTemplateItemDto.title} created successfully`,
-      );
+      const data = await this.templateItemRepository.save(createTemplateItemDto);
+      this.logger.log(`Template item with title ${createTemplateItemDto.title} created successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
       this.logger.error(
@@ -51,10 +39,7 @@ export class TemplateItemService {
       this.logger.log(`Fetched all template items successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching all template items`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching all template items`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -76,10 +61,7 @@ export class TemplateItemService {
       this.logger.log(`Fetched template item with id ${id} successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching template item with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching template item with id ${id}`, error.stack);
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while fetching the template item',
@@ -88,10 +70,7 @@ export class TemplateItemService {
     }
   }
 
-  async update(
-    id: number,
-    updateTemplateItemDto: UpdateTemplateItemDto,
-  ): Promise<ResponseDto> {
+  async update(id: number, updateTemplateItemDto: UpdateTemplateItemDto): Promise<ResponseDto> {
     this.logger.log(`Updating template item with id ${id}`);
 
     try {
@@ -112,10 +91,7 @@ export class TemplateItemService {
       this.logger.log(`Updated template item with id ${id} successfully`);
       return constructSuccessResponse(updatedTemplateItem);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while updating template item with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while updating template item with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -139,17 +115,12 @@ export class TemplateItemService {
         message: 'Template item not found',
       });
     } catch (error) {
-      this.logger.error(
-        `Error occurred while deleting template item with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while deleting template item with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }
 
-  async findByCriteria(
-    criteria: FetchTemplateItemCriteria,
-  ): Promise<ResponseDto> {
+  async findByCriteria(criteria: FetchTemplateItemCriteria): Promise<ResponseDto> {
     this.logger.log(`Fetching template item with criteria ${criteria}`);
 
     try {
@@ -163,15 +134,10 @@ export class TemplateItemService {
         });
       }
 
-      this.logger.log(
-        `Fetched template item with criteria ${criteria} successfully`,
-      );
+      this.logger.log(`Fetched template item with criteria ${criteria} successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching template item with criteria ${criteria}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching template item with criteria ${criteria}`, error.stack);
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while fetching the template item',
