@@ -133,6 +133,25 @@ export const POST_CREATE_GLOBAL_TEMP = {
   description: '',
 };
 
+export const POST_CREATE_RESPONSES_NAME = {
+  summary: 'Creates a new responses name',
+  description: '',
+};
+
+export const PATCH_UPDATE_RESPONSES_NAME = {
+  summary: 'Updates a responses name',
+  description: '',
+};
+
+export const DELETE_RESPONSES_NAME = {
+  summary: 'Deletes a responses name',
+  description: '',
+};
+
+export const GET_RESPONSES_NAME = {
+  summary: 'Get a responses name',
+  description: '',
+}
 export const POST_CREATE_MCQ = {
   summary: 'Creates a new MCQ',
   description: '',
