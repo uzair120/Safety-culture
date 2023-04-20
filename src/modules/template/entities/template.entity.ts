@@ -48,6 +48,6 @@ export class Template extends CustomBaseEntity {
   @IsBoolean()
   published: boolean;
 
-  @OneToMany(() => TemplateItem, (item) => item.template)
+  @OneToMany(() => TemplateItem, (item) => item.template, { eager: true })
   templateItems: TemplateItem[];
 }

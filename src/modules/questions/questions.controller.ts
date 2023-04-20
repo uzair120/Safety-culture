@@ -1,20 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { QuestionService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { ResponseDto } from '../../common';
-import {
-  SwaggerController,
-  SwaggerSuccessResponse,
-} from '../../swagger/decorators';
+import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_QUESTION,
   GET_ALL_QUESTIONS,
@@ -49,10 +38,7 @@ export class QuestionController {
 
   @SwaggerSuccessResponse(UpdateQuestionDto, PATCH_UPDATE_QUESTION)
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateQuestionDto: UpdateQuestionDto,
-  ): Promise<ResponseDto> {
+  update(@Param('id') id: number, @Body() updateQuestionDto: UpdateQuestionDto): Promise<ResponseDto> {
     return this.questionService.update(id, updateQuestionDto);
   }
 
@@ -64,9 +50,7 @@ export class QuestionController {
 
   @SwaggerSuccessResponse(UpdateQuestionDto, PATCH_UPDATE_QUESTION)
   @Get('criteria')
-  findByCriteria(
-    @Body() criteria: FetchQuestionCriteria,
-  ): Promise<ResponseDto> {
+  findByCriteria(@Body() criteria: FetchQuestionCriteria): Promise<ResponseDto> {
     return this.questionService.findByCriteria(criteria);
   }
 }
