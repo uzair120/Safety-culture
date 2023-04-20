@@ -10,9 +10,18 @@ import { TemplateItemsModule } from './modules/template-items/template-items.mod
 import { WidgetsModule } from './modules/widgets/widgets.module';
 import { QuestionsModule } from './modules/questions/questions.module';
 import { WidgetValuesModule } from './modules/widget_values/widget_values.module';
+import { McqsModule } from './modules/mcqs/mcqs.module';
 
 @Module({
-  imports: [CoreModule, TemplateModule, WidgetsModule, TemplateItemsModule, QuestionsModule, WidgetValuesModule],
+  imports: [
+    CoreModule,
+    TemplateModule,
+    WidgetsModule,
+    TemplateItemsModule,
+    QuestionsModule,
+    WidgetValuesModule,
+    McqsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
