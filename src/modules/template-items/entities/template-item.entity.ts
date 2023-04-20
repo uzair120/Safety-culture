@@ -1,24 +1,10 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-} from 'typeorm';
-import {
-  IsBoolean,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Template } from '../../template/entities/template.entity';
 
 import { TemplateItemType } from '../enums';
-import { CustomBaseEntity } from 'src/common';
-import { Question } from 'src/modules/questions/entities/question.entity';
+import { CustomBaseEntity } from '../../../common';
+import { Question } from '../../../modules/questions/entities/question.entity';
 
 @Entity({ name: 'template_items' })
 export class TemplateItem extends CustomBaseEntity {

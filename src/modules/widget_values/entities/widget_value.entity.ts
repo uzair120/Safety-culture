@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { CustomBaseEntity } from 'src/common/entity/base.entity';
+import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { Question } from '../../questions/entities/question.entity';
 
 @Entity({ name: 'widgets_values' })
