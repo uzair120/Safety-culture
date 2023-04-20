@@ -3,11 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Template } from './entities/template.entity';
 import { CreateTemplateDto, UpdateTemplateDto } from './dto';
-import {
-  constructSuccessResponse,
-  constructErrorResponse,
-  ResponseDto,
-} from '../../common';
+import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { FetchTemplateCriteria } from './interfaces/fetchTemplateCriteria.interface';
 
 @Injectable()
@@ -24,15 +20,10 @@ export class TemplateService {
 
     try {
       const data = await this.templateRepository.save(createTemplateDto);
-      this.logger.log(
-        `Template with title ${createTemplateDto.title} created successfully`,
-      );
+      this.logger.log(`Template with title ${createTemplateDto.title} created successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while creating template with title ${createTemplateDto.title}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while creating template with title ${createTemplateDto.title}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -45,10 +36,7 @@ export class TemplateService {
       this.logger.log(`Fetched all templates successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching all templates`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching all templates`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -70,10 +58,7 @@ export class TemplateService {
       this.logger.log(`Fetched template with id ${id} successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching template with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching template with id ${id}`, error.stack);
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while fetching the template',
@@ -82,10 +67,7 @@ export class TemplateService {
     }
   }
 
-  async update(
-    id: number,
-    updateTemplateDto: UpdateTemplateDto,
-  ): Promise<ResponseDto> {
+  async update(id: number, updateTemplateDto: UpdateTemplateDto): Promise<ResponseDto> {
     this.logger.log(`Updating template with id ${id}`);
 
     try {
@@ -104,10 +86,7 @@ export class TemplateService {
       this.logger.log(`Updated template with id ${id} successfully`);
       return constructSuccessResponse(updatedTemplate);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while updating template with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while updating template with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -130,10 +109,7 @@ export class TemplateService {
         message: 'Template not found',
       });
     } catch (error) {
-      this.logger.error(
-        `Error occurred while deleting template with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while deleting template with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -152,15 +128,10 @@ export class TemplateService {
         });
       }
 
-      this.logger.log(
-        `Fetched template with criteria ${criteria} successfully`,
-      );
+      this.logger.log(`Fetched template with criteria ${criteria} successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching template with criteria ${criteria}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching template with criteria ${criteria}`, error.stack);
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while fetching the template',

@@ -151,4 +151,33 @@ export const DELETE_RESPONSES_NAME = {
 export const GET_RESPONSES_NAME = {
   summary: 'Get a responses name',
   description: '',
+}
+export const POST_CREATE_MCQ = {
+  summary: 'Creates a new MCQ',
+  description: '',
+};
+
+export const PATCH_UPDATE_MCQ = {
+  summary: 'Updates an MCQ',
+  description: '',
+};
+
+export const DELETE_MCQ = {
+  summary: 'Deletes an MCQ',
+  description: '',
+};
+
+export const GET_MCQ = {
+  summary: 'Get an MCQ',
+  description: '',
+};
+
+export const GET_ALL_MCQS = {
+  summary: 'Get all MCQs',
+  description: '',
+};
+
+export const GET_MCQS_BY_QUESTION_ID = {
+  summary: 'Get all MCQs by Question ID',
+  description: '',
 };
