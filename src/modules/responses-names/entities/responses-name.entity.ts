@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { Question } from '../../questions/entities/question.entity';
+import { Response } from '../../responses/entities/response.entity';
 
 @Entity({ name: 'responses_name' })
 export class ResponsesName extends CustomBaseEntity {
@@ -31,4 +32,7 @@ export class ResponsesName extends CustomBaseEntity {
   })
   @JoinColumn({ name: 'question_id' })
   question: Question;
+
+  @OneToMany(() => Response, (response) => response.responsesName)
+  responses: Response[];
 }
