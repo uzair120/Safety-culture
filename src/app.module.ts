@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -10,9 +9,18 @@ import { TemplateItemsModule } from './modules/template-items/template-items.mod
 import { WidgetsModule } from './modules/widgets/widgets.module';
 import { QuestionsModule } from './modules/questions/questions.module';
 import { WidgetValuesModule } from './modules/widget_values/widget_values.module';
+import { ResponsesNamesModule } from './modules/responses-names/responses-names.module';
 
 @Module({
-  imports: [CoreModule, TemplateModule, WidgetsModule, TemplateItemsModule, QuestionsModule, WidgetValuesModule],
+  imports: [
+    CoreModule,
+    TemplateModule,
+    WidgetsModule,
+    TemplateItemsModule,
+    QuestionsModule,
+    WidgetValuesModule,
+    ResponsesNamesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

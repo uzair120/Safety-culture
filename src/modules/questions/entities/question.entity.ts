@@ -4,6 +4,7 @@ import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { TemplateItem } from '../../template-items/entities/template-item.entity';
 import { Widget } from '../../widgets/entities/widget.entity';
 import { WidgetValue } from '../../../modules/widget_values/entities/widget_value.entity';
+import { ResponsesName } from 'src/modules/responses-names/entities/responses-name.entity';
 
 @Entity({ name: 'questions' })
 export class Question extends CustomBaseEntity {
@@ -43,4 +44,7 @@ export class Question extends CustomBaseEntity {
 
   @OneToMany(() => WidgetValue, (widgetValue) => widgetValue.question)
   values: WidgetValue[];
+
+  @OneToMany(() => ResponsesName, (responsesName) => responsesName.question, { eager: true })
+  responsesNames: ResponsesName[];
 }
