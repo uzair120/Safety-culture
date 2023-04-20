@@ -7,9 +7,6 @@ import { setupSwagger } from './swagger.config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Setup Swagger
-  setupSwagger(app);
-
   app.enableCors({
     allowedHeaders: '*',
     origin: '*',
@@ -17,6 +14,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix(CONSTANTS.BASE_ROUTE);
 
+  // Setup Swagger
+  setupSwagger(app);
   const configService = app.get(ConfigService);
   const environment = configService.get<string>('NODE_ENV');
 

@@ -5,6 +5,7 @@ import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '.
 import { FetchTemplateItemCriteria } from './interfaces/fetch-template-item-criteria.interface';
 import { TemplateItem } from './entities/template-item.entity';
 import { CreateTemplateItemDto, UpdateTemplateItemDto } from './dto';
+import { TemplateItemType } from './enums';
 
 @Injectable()
 export class TemplateItemService {
@@ -28,6 +29,22 @@ export class TemplateItemService {
         error.stack,
       );
       return constructErrorResponse(error);
+    }
+  }
+
+  async createInternal(createTemplateItemDto: CreateTemplateItemDto): Promise<TemplateItem> {
+    this.logger.log(`Creating template item with title ${createTemplateItemDto.title}`);
+    createTemplateItemDto.type = TemplateItemType.PAGE;
+    try {
+      const data = await this.templateItemRepository.save(createTemplateItemDto);
+      this.logger.log(`Template item with title ${createTemplateItemDto.title} created successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while creating template item with title ${createTemplateItemDto.title}`,
+        error.stack,
+      );
+      return error;
     }
   }
 

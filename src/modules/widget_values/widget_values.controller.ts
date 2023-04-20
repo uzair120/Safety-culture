@@ -1,15 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { WidgetValuesService } from './widget_values.service';
 import { CreateWidgetValueDto, UpdateWidgetValueDto } from './dto';
-import { ResponseDto } from 'src/common';
-import { SwaggerController, SwaggerSuccessResponse } from 'src/swagger/decorators';
+import { ResponseDto } from '../../common';
+import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_WIDGET_VALUE,
   GET_ALL_WIDGET_VALUES,
   GET_WIDGET_VALUE,
   POST_CREATE_WIDGET_VALUE,
   PUT_UPDATE_WIDGET_VALUE,
-} from 'src/swagger/SwaggerAPIDetails';
+} from '../../swagger/SwaggerAPIDetails';
 
 @SwaggerController('Widget Values')
 @Controller('widget-values')
