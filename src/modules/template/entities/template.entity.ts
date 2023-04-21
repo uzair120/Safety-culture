@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
-import { CustomBaseEntity } from 'src/common/entity/base.entity';
-import { TemplateItem } from 'src/modules/template-items/entities/template-item.entity';
+import { CustomBaseEntity } from '../../../common/entity/base.entity';
+import { TemplateItem } from '../../../modules/template-items/entities/template-item.entity';
 
 @Entity({ name: 'templates' })
 export class Template extends CustomBaseEntity {

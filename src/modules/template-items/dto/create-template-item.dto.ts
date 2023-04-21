@@ -1,6 +1,7 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { TemplateItemType } from '../enums';
+import { CreateTemplateItemQuestionDto } from 'src/modules/global-template/dto/template-item-question.dto';
 
 export class CreateTemplateItemDto {
   @ApiProperty()
@@ -36,4 +37,9 @@ export class CreateTemplateItemDto {
   @IsOptional()
   @IsBoolean()
   status?: boolean;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsBoolean()
+  children?: CreateTemplateItemQuestionDto[];
 }

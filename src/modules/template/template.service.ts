@@ -28,6 +28,19 @@ export class TemplateService {
     }
   }
 
+  async createInternal(createTemplateDto: CreateTemplateDto, createdBy: number): Promise<Template> {
+    this.logger.log(`Creating template with title ${createTemplateDto.title}`);
+
+    try {
+      const data = await this.templateRepository.save({ ...createTemplateDto, createdBy: createdBy });
+      this.logger.log(`Template with title ${createTemplateDto.title} created successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while creating template with title ${createTemplateDto.title}`, error.stack);
+      return constructErrorResponse(error);
+    }
+  }
+
   async findAll(): Promise<ResponseDto> {
     this.logger.log(`Fetching all templates`);
 
@@ -65,6 +78,12 @@ export class TemplateService {
         error: error.message,
       });
     }
+  }
+  async findOneInternal(id: number) {
+    this.logger.log(`Fetching template with id ${id}`);
+
+    const data = await this.templateRepository.findOne({ where: { id } });
+    return data;
   }
 
   async update(id: number, updateTemplateDto: UpdateTemplateDto): Promise<ResponseDto> {

@@ -8,5 +8,6 @@ import { WidgetValue } from './entities/widget_value.entity';
   imports: [TypeOrmModule.forFeature([WidgetValue])],
   controllers: [WidgetValuesController],
   providers: [WidgetValuesService],
+  exports: [WidgetValuesService],
 })
 export class WidgetValuesModule {}

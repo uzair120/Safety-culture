@@ -38,16 +38,18 @@ export class Question extends CustomBaseEntity {
   item: TemplateItem;
 
   @ManyToOne(() => Widget, (widget) => widget.questions, {
+    eager: true,
     nullable: false,
   })
   @JoinColumn({ name: 'widget_id' })
   widget: Widget;
 
   @OneToMany(() => WidgetValue, (widgetValue) => widgetValue.question, { eager: true })
-  values: WidgetValue[];
+  values?: WidgetValue[];
 
-  @OneToMany(() => ResponsesName, (responsesName) => responsesName.question, { eager: true })
-  responsesNames: ResponsesName[];
-  @OneToMany(() => MCQ, (mcq) => mcq.question, { eager: true })
-  mcqs: MCQ[];
+  @OneToMany(() => ResponsesName, (responsesName) => responsesName.question, { eager: false })
+  responsesNames?: ResponsesName[];
+
+  @OneToMany(() => MCQ, (mcq) => mcq.question, { eager: false })
+  mcqs?: MCQ[];
 }
