@@ -108,11 +108,17 @@ export class GlobalTemplateService {
 
   async findOne(id: number) {
     const template = await this.templateService.findOneInternal(id);
-    const children = template.templateItems.filter((template) => template.parentId !== null);
+    let children = template.templateItems.filter((template) => template.parentId !== null);
     const parent = template.templateItems.filter((template) => template.parentId === null);
-    parent.map((template) => (template['children'] = children.filter((a) => a.parentId == template.id)));
-
-    return { template, children: parent };
+    parent.map((template) => {
+      children.map((template) => {
+        const child2 = children.filter((a) => a.parentId == template.id);
+        if (child2 && child2.length > 0) template['children'] = child2;
+      });
+      const child = children.filter((a) => a.parentId == template.id);
+      if (child && child.length > 0) template['children'] = child;
+    });
+    return { ...template, templateItems: parent };
   }
 
   update(id: number, updateGlobalTemplateDto: UpdateGlobalTemplateDto) {
