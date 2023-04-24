@@ -1,14 +1,14 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { Question } from '../../questions/entities/question.entity';
 
 @Entity({ name: 'widget_values' })
 export class WidgetValue extends CustomBaseEntity {
-  @PrimaryColumn({ name: 'question_id', type: 'int', unsigned: true })
+  @Column({ name: 'question_id', type: 'int', unsigned: true })
   questionId: number;
 
-  @PrimaryColumn({ name: 'attribute_name', type: 'varchar', length: 255 })
+  @Column({ name: 'attribute_name', type: 'varchar', length: 255 })
   @IsString()
   @IsNotEmpty()
   attributeName: string;

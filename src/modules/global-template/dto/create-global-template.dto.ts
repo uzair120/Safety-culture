@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateGlobalTemplateDto {
   @ApiProperty()
-  template: CreateTemplateDto;
+  template: UpdateTemplateDto;
 
   @ApiProperty()
   templateItems: CreateTemplateItemQuestionDto[];

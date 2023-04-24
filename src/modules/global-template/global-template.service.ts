@@ -3,7 +3,7 @@ import { CreateGlobalTemplateDto } from './dto/create-global-template.dto';
 import { UpdateGlobalTemplateDto } from './dto/update-global-template.dto';
 import { TemplateService } from '../template/template.service';
 import { TemplateItemService } from '../template-items/template-items.service';
-import { CreateTemplateItemDto } from '../template-items/dto';
+import { CreateTemplateItemDto, UpdateTemplateItemDto } from '../template-items/dto';
 import { CreateTemplateItemQuestionDto } from './dto/template-item-question.dto';
 import { QuestionService } from '../questions/questions.service';
 import { TemplateItemType } from '../template-items/enums';
@@ -40,6 +40,7 @@ export class GlobalTemplateService {
 
     try {
       const template = await this.templateService.createInternal(createGlobalTemplateDto.template, createdBy);
+
       const arrayItems = await this.saveTemplateItemData(createGlobalTemplateDto.templateItems, template.id);
       return constructSuccessResponse({ template, templateItems: arrayItems });
     } catch (error) {
@@ -47,8 +48,22 @@ export class GlobalTemplateService {
     }
   }
 
+  // private async updateTemplateData(updateGlobalTemplateDto: UpdateGlobalTemplateDto) {
+  //   try {
+  //     if (updateGlobalTemplateDto.template?.id) {
+  //       const template = await this.templateService.update(
+  //         updateGlobalTemplateDto.template.id,
+  //         updateGlobalTemplateDto.template,
+  //       );
+  //     }
+  //     const templateItems = await this.updateTemplateItems(updateGlobalTemplateDto.templateItems);
+  //   } catch (error) {}
+  // }
+
+  // private async updateTemplateItems(templateItems: any) {}
+
   private async saveTemplateItems(createTemplateItemDto: CreateTemplateItemQuestionDto) {
-    const templateItem = await this.templateItemsService.createInternal(createTemplateItemDto as CreateTemplateItemDto);
+    const templateItem = await this.templateItemsService.createInternal(createTemplateItemDto as UpdateTemplateItemDto);
     if (createTemplateItemDto.question) {
       createTemplateItemDto.question.itemId = templateItem.id;
       const question = await this.questionService.createInternal(createTemplateItemDto.question);
@@ -97,7 +112,7 @@ export class GlobalTemplateService {
     const parent = template.templateItems.filter((template) => template.parentId === null);
     parent.map((template) => (template['children'] = children.filter((a) => a.parentId == template.id)));
 
-    return parent;
+    return { template, children: parent };
   }
 
   update(id: number, updateGlobalTemplateDto: UpdateGlobalTemplateDto) {

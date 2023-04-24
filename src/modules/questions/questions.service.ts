@@ -27,11 +27,16 @@ export class QuestionService {
       return constructErrorResponse(error);
     }
   }
-  async createInternal(createQuestionDto: CreateQuestionDto) {
+  async createInternal(createQuestionDto: UpdateQuestionDto) {
     this.logger.log(`Creating question with item_id ${createQuestionDto.itemId}`);
 
     try {
-      const data = await this.questionRepository.save(createQuestionDto);
+      let data: any;
+      if (createQuestionDto?.id) {
+        data = await this.questionRepository.update(createQuestionDto.id, createQuestionDto);
+      } else {
+        data = await this.questionRepository.save(createQuestionDto);
+      }
       this.logger.log(`Question with item_id ${createQuestionDto.itemId} created successfully`);
       return data;
     } catch (error) {

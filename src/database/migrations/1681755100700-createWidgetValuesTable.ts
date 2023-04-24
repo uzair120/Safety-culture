@@ -4,11 +4,10 @@ export class createWidgetValuesTable1681755100700 implements MigrationInterface 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         CREATE TABLE widget_values (
+          id SERIAL PRIMARY KEY,
           question_id INT NOT NULL,
-          attribute_name VARCHAR(255),
-          attribute_value VARCHAR(255),
-  
-          PRIMARY KEY (question_id, attribute_name),
+          attribute_name VARCHAR(255) NOT NULL,
+          attribute_value VARCHAR(255) NOT NULL,
   
           created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
           updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
