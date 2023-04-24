@@ -27,6 +27,18 @@ export class QuestionService {
       return constructErrorResponse(error);
     }
   }
+  async createInternal(createQuestionDto: CreateQuestionDto) {
+    this.logger.log(`Creating question with item_id ${createQuestionDto.itemId}`);
+
+    try {
+      const data = await this.questionRepository.save(createQuestionDto);
+      this.logger.log(`Question with item_id ${createQuestionDto.itemId} created successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while creating question with item_id ${createQuestionDto.itemId}`, error.stack);
+      return error;
+    }
+  }
 
   async findAll(): Promise<ResponseDto> {
     this.logger.log(`Fetching all questions`);

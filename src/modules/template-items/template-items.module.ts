@@ -8,5 +8,6 @@ import { TemplateItem } from './entities/template-item.entity';
   imports: [TypeOrmModule.forFeature([TemplateItem])],
   controllers: [TemplateItemsController],
   providers: [TemplateItemService],
+  exports: [TemplateItemService],
 })
 export class TemplateItemsModule {}

@@ -1,0 +1,48 @@
+curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--data '{
+    "template": {
+        "title": "string1",
+        "description": "string1",
+        "image": "string1",
+        "business_id": 11,
+        "created_by": 12,
+        "total_score": 10,
+        "published": true
+    },
+    "templateItems": [
+        {
+            "title": "ques",
+            "type": "QUESTION",
+            "orderIndex": 2,
+            "status": true,
+            "question": {
+                "widgetId": 2,
+                "format": "string2",
+                "imageUrl": "rtrrttrrt",
+                "required": true
+            }
+        },
+        {
+            "title": "parent",
+            "type": "PAGE",
+            "orderIndex": 2,
+            "status": true,
+            "children": [
+                {
+                    "title": "children ques",
+                    "type": "QUESTION",
+                    "orderIndex": 2,
+                    "status": true,
+                    "question": {
+                        "widgetId": 2,
+                        "format": "string2",
+                        "required": true,
+                        "imageUrl": "rtrrttrrt"
+                    }
+                }
+            ]
+        }
+    ]
+}'

@@ -3,11 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Widget } from './entities/widget.entity';
 import { CreateWidgetDto, UpdateWidgetDto } from './dto';
-import {
-  constructSuccessResponse,
-  constructErrorResponse,
-  ResponseDto,
-} from '../../common';
+import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { WidgetSearchCriteria } from './interfaces/widget-search-criteria.interface';
 
 @Injectable()
@@ -24,15 +20,10 @@ export class WidgetService {
 
     try {
       const data = await this.widgetRepository.save(createWidgetDto);
-      this.logger.log(
-        `Widget with name ${createWidgetDto.name} created successfully`,
-      );
+      this.logger.log(`Widget with name ${createWidgetDto.name} created successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while creating widget with name ${createWidgetDto.name}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while creating widget with name ${createWidgetDto.name}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -45,10 +36,7 @@ export class WidgetService {
       this.logger.log(`Fetched all widgets successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching all widgets`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching all widgets`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -70,10 +58,7 @@ export class WidgetService {
       this.logger.log(`Fetched widget with id ${id} successfully`);
       return constructSuccessResponse(data);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while fetching widget with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while fetching widget with id ${id}`, error.stack);
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while fetching the widget',
@@ -81,11 +66,13 @@ export class WidgetService {
       });
     }
   }
+  async findOneInternal(id: number) {
+    this.logger.log(`Fetching widget with id ${id}`);
 
-  async update(
-    id: number,
-    updateWidgetDto: UpdateWidgetDto,
-  ): Promise<ResponseDto> {
+    return await this.widgetRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateWidgetDto: UpdateWidgetDto): Promise<ResponseDto> {
     this.logger.log(`Updating widget with id ${id}`);
 
     try {
@@ -104,10 +91,7 @@ export class WidgetService {
       this.logger.log(`Updated widget with id ${id} successfully`);
       return constructSuccessResponse(updatedWidget);
     } catch (error) {
-      this.logger.error(
-        `Error occurred while updating widget with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while updating widget with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }
@@ -130,10 +114,7 @@ export class WidgetService {
         message: 'Widget not found',
       });
     } catch (error) {
-      this.logger.error(
-        `Error occurred while deleting widget with id ${id}`,
-        error.stack,
-      );
+      this.logger.error(`Error occurred while deleting widget with id ${id}`, error.stack);
       return constructErrorResponse(error);
     }
   }

@@ -35,6 +35,30 @@ export class WidgetValuesService {
     }
   }
 
+  async createInternal(createWidgetValueDto: CreateWidgetValueDto) {
+    this.logger.log(
+      `Creating widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId}`,
+    );
+
+    try {
+      await this.widgetValuesRepository.delete({
+        questionId: createWidgetValueDto.questionId,
+        attributeName: createWidgetValueDto.attributeName,
+      });
+      const data = await this.widgetValuesRepository.save(createWidgetValueDto);
+      this.logger.log(
+        `Widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId} created successfully`,
+      );
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while creating widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId}`,
+        error.stack,
+      );
+      return error;
+    }
+  }
+
   async findAll(): Promise<ResponseDto> {
     this.logger.log(`Fetching all widget values`);
 

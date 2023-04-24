@@ -2,15 +2,15 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { TemplateItemService } from './template-items.service';
 import { CreateTemplateItemDto } from './dto/create-template-item.dto';
 import { UpdateTemplateItemDto } from './dto/update-template-item.dto';
-import { ResponseDto } from 'src/common';
-import { SwaggerController, SwaggerSuccessResponse } from 'src/swagger/decorators';
+import { ResponseDto } from '../../common';
+import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_TEMPLATE_ITEM,
   GET_ALL_TEMPLATE_ITEMS,
   GET_TEMPLATE_ITEM,
   PATCH_UPDATE_TEMPLATE_ITEM,
   POST_CREATE_TEMPLATE_ITEM,
-} from 'src/swagger/SwaggerAPIDetails';
+} from '../../swagger/SwaggerAPIDetails';
 
 @SwaggerController('Template Items')
 @Controller('template-items')
