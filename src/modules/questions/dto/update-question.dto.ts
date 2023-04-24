@@ -6,5 +6,5 @@ export class UpdateQuestionDto extends PartialType(CreateQuestionDto) {
   @IsOptional()
   @ApiProperty()
   @IsNumber()
-  id: number;
+  id?: number;
 }

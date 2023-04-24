@@ -1,4 +1,4 @@
-curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
+curl --location 'http://localhost:3000/iauditor/api/v1/global-template/' \
 --header 'accept: application/json' \
 --header 'Content-Type: application/json' \
 --data '{
@@ -8,39 +8,46 @@ curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
         "image": "string1",
         "business_id": 11,
         "created_by": 12,
-        "total_score": 10,
-        "published": true
+        "total_score": 0,
+        "published": false
     },
     "templateItems": [
         {
-            "title": "ques",
-            "type": "QUESTION",
-            "orderIndex": 2,
-            "status": true,
-            "question": {
-                "widgetId": 2,
-                "format": "string2",
-                "imageUrl": "rtrrttrrt",
-                "required": true
-            }
-        },
-        {
-            "title": "parent",
+            "title": "PAGE1",
             "type": "PAGE",
-            "orderIndex": 2,
-            "status": true,
+            "orderIndex": 1,
+            "status": false,
             "children": [
                 {
-                    "title": "children ques",
+                    "title": "ques1",
                     "type": "QUESTION",
-                    "orderIndex": 2,
-                    "status": true,
+                    "orderIndex": 1,
+                    "status": false,
                     "question": {
-                        "widgetId": 2,
-                        "format": "string2",
-                        "required": true,
-                        "imageUrl": "rtrrttrrt"
+                        "widgetId": 1,
+                        "format": "NUMBER",
+                        "required": true
                     }
+                },
+                {
+                    "title": "sec1",
+                    "type": "SECTION",
+                    "orderIndex": 2,
+                    "status": false,
+                     "children": [
+                        {
+                            "title": "children ques",
+                            "type": "QUESTION",
+                            "orderIndex": 2,
+                            "status": true,
+                            "question": {
+                                "widgetId": 2,
+                                "format": "INSTRUCTION",
+                                "required": true,
+                                "imageUrl": "rtrrttrrt"
+                            }
+                        }
+                    ]
                 }
             ]
         }

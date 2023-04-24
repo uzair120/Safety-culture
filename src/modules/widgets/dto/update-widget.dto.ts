@@ -6,5 +6,5 @@ export class UpdateWidgetDto extends PartialType(CreateWidgetDto) {
   @IsOptional()
   @ApiProperty()
   @IsNumber()
-  id: number;
+  id?: number;
 }

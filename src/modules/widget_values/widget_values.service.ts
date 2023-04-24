@@ -35,7 +35,7 @@ export class WidgetValuesService {
     }
   }
 
-  async createInternal(createWidgetValueDto: CreateWidgetValueDto) {
+  async createInternal(createWidgetValueDto: UpdateWidgetValueDto) {
     this.logger.log(
       `Creating widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId}`,
     );
@@ -45,7 +45,16 @@ export class WidgetValuesService {
         questionId: createWidgetValueDto.questionId,
         attributeName: createWidgetValueDto.attributeName,
       });
-      const data = await this.widgetValuesRepository.save(createWidgetValueDto);
+      let data: any;
+
+      if (createWidgetValueDto?.id) {
+        data = await this.widgetValuesRepository.update(
+          { questionId: createWidgetValueDto.questionId, attributeName: createWidgetValueDto.attributeName },
+          createWidgetValueDto,
+        );
+      } else {
+        data = await this.widgetValuesRepository.save(createWidgetValueDto);
+      }
       this.logger.log(
         `Widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId} created successfully`,
       );

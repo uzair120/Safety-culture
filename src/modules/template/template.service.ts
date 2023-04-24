@@ -28,11 +28,17 @@ export class TemplateService {
     }
   }
 
-  async createInternal(createTemplateDto: CreateTemplateDto, createdBy: number): Promise<Template> {
+  async createInternal(createTemplateDto: UpdateTemplateDto, createdBy: number): Promise<Template> {
     this.logger.log(`Creating template with title ${createTemplateDto.title}`);
 
     try {
-      const data = await this.templateRepository.save({ ...createTemplateDto, createdBy: createdBy });
+      let data: any;
+      if (createTemplateDto?.id) {
+        data = await this.templateRepository.update(createTemplateDto.id, createTemplateDto);
+      } else {
+        data = await this.templateRepository.save({ ...createTemplateDto, createdBy: createdBy });
+      }
+
       this.logger.log(`Template with title ${createTemplateDto.title} created successfully`);
       return data;
     } catch (error) {

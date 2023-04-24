@@ -5,7 +5,7 @@ export class UpdateTemplateDto {
   @IsOptional()
   @ApiProperty()
   @IsNumber()
-  id: number;
+  id?: number;
 
   @IsOptional()
   @IsString()

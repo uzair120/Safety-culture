@@ -32,11 +32,16 @@ export class TemplateItemService {
     }
   }
 
-  async createInternal(createTemplateItemDto: CreateTemplateItemDto): Promise<TemplateItem> {
+  async createInternal(createTemplateItemDto: UpdateTemplateItemDto): Promise<TemplateItem> {
     this.logger.log(`Creating template item with title ${createTemplateItemDto.title}`);
-    createTemplateItemDto.type = TemplateItemType.PAGE;
     try {
-      const data = await this.templateItemRepository.save(createTemplateItemDto);
+      let data: any;
+
+      if (createTemplateItemDto?.id) {
+        data = await this.templateItemRepository.update(createTemplateItemDto.id, createTemplateItemDto);
+      } else {
+        data = await this.templateItemRepository.save(createTemplateItemDto);
+      }
       this.logger.log(`Template item with title ${createTemplateItemDto.title} created successfully`);
       return data;
     } catch (error) {

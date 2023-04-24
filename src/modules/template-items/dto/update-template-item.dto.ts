@@ -6,5 +6,5 @@ export class UpdateTemplateItemDto extends PartialType(CreateTemplateItemDto) {
   @IsOptional()
   @ApiProperty()
   @IsNumber()
-  id: number;
+  id?: number;
 }
