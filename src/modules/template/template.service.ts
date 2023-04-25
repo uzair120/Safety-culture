@@ -34,7 +34,11 @@ export class TemplateService {
     try {
       let data: any;
       if (createTemplateDto?.id) {
-        data = await this.templateRepository.update(createTemplateDto.id, createTemplateDto);
+        await this.templateRepository.update(createTemplateDto.id, {
+          ...createTemplateDto,
+          createdBy: createdBy,
+        });
+        data = await this.templateRepository.findOne({ where: { id: createTemplateDto.id } });
       } else {
         data = await this.templateRepository.save({ ...createTemplateDto, createdBy: createdBy });
       }

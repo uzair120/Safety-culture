@@ -42,6 +42,7 @@ export class GlobalTemplateService {
       const template = await this.templateService.createInternal(createGlobalTemplateDto.template, createdBy);
 
       const arrayItems = await this.saveTemplateItemData(createGlobalTemplateDto.templateItems, template.id);
+      delete template.templateItems;
       return constructSuccessResponse({ template, templateItems: arrayItems });
     } catch (error) {
       return constructErrorResponse(error);
@@ -53,7 +54,8 @@ export class GlobalTemplateService {
     if (createTemplateItemDto.question) {
       createTemplateItemDto.question.itemId = templateItem.id;
       const question = await this.questionService.createInternal(createTemplateItemDto.question);
-      const widget = await this.widgetService.findOneInternal(question.widgetId);
+      const widget = question.widget;
+      delete question.widget;
       question.type = widget.type;
       const result = schema.validate(question);
       if (result.error) {
@@ -68,6 +70,7 @@ export class GlobalTemplateService {
           attributeValue: createTemplateItemDto.question[element],
         });
       }
+      templateItem.questions = question;
     }
     return templateItem;
   }

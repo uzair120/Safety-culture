@@ -38,7 +38,17 @@ export class TemplateItemService {
       let data: any;
 
       if (createTemplateItemDto?.id) {
-        data = await this.templateItemRepository.update(createTemplateItemDto.id, createTemplateItemDto);
+        const newRefinedTempalteItemDto = {
+          id: createTemplateItemDto.id,
+          title: createTemplateItemDto.title,
+          type: createTemplateItemDto.type,
+          templateId: createTemplateItemDto.templateId,
+          orderIndex: createTemplateItemDto.orderIndex,
+          parentId: createTemplateItemDto.parentId,
+          status: createTemplateItemDto.status,
+        };
+        await this.templateItemRepository.update(newRefinedTempalteItemDto.id, newRefinedTempalteItemDto);
+        data = await this.templateItemRepository.findOne({ where: { id: createTemplateItemDto.id } });
       } else {
         data = await this.templateItemRepository.save(createTemplateItemDto);
       }
