@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Template } from '../../template/entities/template.entity';
 
@@ -70,6 +70,6 @@ export class TemplateItem extends CustomBaseEntity {
   })
   template: Template;
 
-  @OneToMany(() => Question, (question) => question.item, { eager: true })
-  questions: Question[];
+  @OneToOne(() => Question, (question) => question.item, { eager: true })
+  questions: Question;
 }
