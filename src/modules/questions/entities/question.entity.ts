@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { TemplateItem } from '../../template-items/entities/template-item.entity';
@@ -31,7 +31,7 @@ export class Question extends CustomBaseEntity {
   @IsBoolean()
   required: boolean;
 
-  @ManyToOne(() => TemplateItem, (item) => item.questions, {
+  @OneToOne(() => TemplateItem, (item) => item.questions, {
     nullable: false,
   })
   @JoinColumn({ name: 'item_id' })
