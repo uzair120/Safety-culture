@@ -29,10 +29,6 @@ export class CreateTemplateItemDto {
   @IsNumber()
   parentId?: number;
 
-  @ApiProperty({ required: true })
-  @IsNumber()
-  template_id?: number;
-
   @ApiProperty({ required: false })
   @IsOptional()
   @IsBoolean()

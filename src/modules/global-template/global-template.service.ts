@@ -48,20 +48,6 @@ export class GlobalTemplateService {
     }
   }
 
-  // private async updateTemplateData(updateGlobalTemplateDto: UpdateGlobalTemplateDto) {
-  //   try {
-  //     if (updateGlobalTemplateDto.template?.id) {
-  //       const template = await this.templateService.update(
-  //         updateGlobalTemplateDto.template.id,
-  //         updateGlobalTemplateDto.template,
-  //       );
-  //     }
-  //     const templateItems = await this.updateTemplateItems(updateGlobalTemplateDto.templateItems);
-  //   } catch (error) {}
-  // }
-
-  // private async updateTemplateItems(templateItems: any) {}
-
   private async saveTemplateItems(createTemplateItemDto: CreateTemplateItemQuestionDto) {
     const templateItem = await this.templateItemsService.createInternal(createTemplateItemDto as UpdateTemplateItemDto);
     if (createTemplateItemDto.question) {
@@ -79,7 +65,7 @@ export class GlobalTemplateService {
         await this.widgetValueService.createInternal({
           questionId: question.id,
           attributeName: element,
-          attributeValue: question[element],
+          attributeValue: createTemplateItemDto.question[element],
         });
       }
     }

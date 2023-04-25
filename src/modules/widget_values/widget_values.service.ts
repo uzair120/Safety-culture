@@ -21,7 +21,13 @@ export class WidgetValuesService {
     );
 
     try {
-      const data = await this.widgetValuesRepository.save(createWidgetValueDto);
+      await this.widgetValuesRepository.query(`
+      SELECT insert_widget_value(${createWidgetValueDto.questionId}, '${createWidgetValueDto.attributeName}', '${createWidgetValueDto.attributeValue}')
+    `);
+      const data = await this.widgetValuesRepository.findOne({
+        where: { questionId: createWidgetValueDto.questionId, attributeName: createWidgetValueDto.attributeName },
+      });
+
       this.logger.log(
         `Widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId} created successfully`,
       );
@@ -41,20 +47,12 @@ export class WidgetValuesService {
     );
 
     try {
-      await this.widgetValuesRepository.delete({
-        questionId: createWidgetValueDto.questionId,
-        attributeName: createWidgetValueDto.attributeName,
+      await this.widgetValuesRepository.query(`
+      SELECT insert_widget_value(${createWidgetValueDto.questionId}, '${createWidgetValueDto.attributeName}', '${createWidgetValueDto.attributeValue}')
+    `);
+      const data = await this.widgetValuesRepository.findOne({
+        where: { questionId: createWidgetValueDto.questionId, attributeName: createWidgetValueDto.attributeName },
       });
-      let data: any;
-
-      if (createWidgetValueDto?.id) {
-        data = await this.widgetValuesRepository.update(
-          { questionId: createWidgetValueDto.questionId, attributeName: createWidgetValueDto.attributeName },
-          createWidgetValueDto,
-        );
-      } else {
-        data = await this.widgetValuesRepository.save(createWidgetValueDto);
-      }
       this.logger.log(
         `Widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId} created successfully`,
       );
@@ -134,9 +132,11 @@ export class WidgetValuesService {
         });
       }
 
-      await this.widgetValuesRepository.update({ questionId, attributeName }, updateWidgetValueDto);
+      await this.widgetValuesRepository.query(`
+      SELECT insert_widget_value(${questionId}, '${attributeName}', '${updateWidgetValueDto.attributeValue}')
+    `);
       const updatedWidgetValue = await this.widgetValuesRepository.findOne({
-        where: { questionId, attributeName },
+        where: { questionId: questionId, attributeName: attributeName },
       });
 
       this.logger.log(
