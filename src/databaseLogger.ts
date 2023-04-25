@@ -9,40 +9,22 @@ class DatabaseLogger implements TypeOrmLogger {
       return;
     }
 
-    this.logger.log(
-      `{"query": "${query}", "parameters": "${this.stringifyParameters(
-        parameters,
-      )}"}`,
-    );
+    this.logger.log(`{"query": "${query}", "parameters": "${this.stringifyParameters(parameters)}"}`);
   }
-  logQueryError(
-    error: string,
-    query: string,
-    parameters?: unknown[],
-    queryRunner?: QueryRunner,
-  ) {
+  logQueryError(error: string, query: string, parameters?: unknown[], queryRunner?: QueryRunner) {
     if (queryRunner?.data?.isCreatingLogs) {
       return;
     }
     this.logger.error(
-      `{"query": "${query}", "parameters": "${this.stringifyParameters(
-        parameters,
-      )}", "error": "${error}"}`,
+      `{"query": "${query}", "parameters": "${this.stringifyParameters(parameters)}", "error": "${error}"}`,
     );
   }
-  logQuerySlow(
-    time: number,
-    query: string,
-    parameters?: unknown[],
-    queryRunner?: QueryRunner,
-  ) {
+  logQuerySlow(time: number, query: string, parameters?: unknown[], queryRunner?: QueryRunner) {
     if (queryRunner?.data?.isCreatingLogs) {
       return;
     }
     this.logger.warn(
-      `{"time": "${time}", "parameters": "${this.stringifyParameters(
-        parameters,
-      )}", "query": "${query}"}`,
+      `{"time": "${time}", "parameters": "${this.stringifyParameters(parameters)}", "query": "${query}"}`,
     );
   }
   logMigration(message: string) {
@@ -51,11 +33,7 @@ class DatabaseLogger implements TypeOrmLogger {
   logSchemaBuild(message: string) {
     this.logger.log(`"message": "${message}"`);
   }
-  log(
-    level: 'log' | 'info' | 'warn',
-    message: string,
-    queryRunner?: QueryRunner,
-  ) {
+  log(level: 'log' | 'info' | 'warn', message: string, queryRunner?: QueryRunner) {
     if (queryRunner?.data?.isCreatingLogs) {
       return;
     }

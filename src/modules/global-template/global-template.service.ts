@@ -15,6 +15,8 @@ import { throwError } from 'rxjs';
 import { WidgetValue } from '../widget_values/entities/widget_value.entity';
 import { WidgetValuesService } from '../widget_values/widget_values.service';
 import { Question } from '../questions/entities/question.entity';
+import { getRepository, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class GlobalTemplateService {
@@ -24,6 +26,9 @@ export class GlobalTemplateService {
     private readonly questionService: QuestionService,
     private readonly widgetService: WidgetService,
     private readonly widgetValueService: WidgetValuesService,
+
+    @InjectRepository(WidgetValue)
+    private readonly widgetRepository: Repository<WidgetValue>,
   ) {}
 
   async create(createGlobalTemplateDto: CreateGlobalTemplateDto, createdBy: number = 1) {
@@ -60,17 +65,43 @@ export class GlobalTemplateService {
         throw Error(result.error.message);
       }
       const attributes = getAttributesByType(question.type);
-      for (let index = 0; index < attributes.length; index++) {
-        const element = attributes[index];
-        await this.widgetValueService.createInternal({
-          questionId: question.id,
-          attributeName: element,
-          attributeValue: createTemplateItemDto.question[element],
-        });
+
+      const attributesExists = await this.checkAttributesExists(question?.id, attributes);
+      const properties = [];
+      if (!attributesExists) {
+        await this.deleteAttribute(question?.id);
+
+        for (let index = 0; index < attributes.length; index++) {
+          const element = attributes[index];
+          const data = await this.widgetValueService.createInternal({
+            questionId: question.id,
+            attributeName: element,
+            attributeValue: createTemplateItemDto.question[element],
+          });
+
+          properties.push({ [data?.attributeName]: data?.attributeValue });
+        }
       }
     }
     return templateItem;
   }
+
+  private async deleteAttribute(questionId: number) {
+    const queryBuilder = this.widgetRepository.createQueryBuilder('widget_values');
+    await queryBuilder.softDelete().where('widget_values.question_id = :questionId', { questionId }).execute();
+  }
+
+  private async checkAttributesExists(questionId: number, attributes: any) {
+    const queryBuilder = this.widgetRepository.createQueryBuilder('widget_values');
+
+    const queryResult = await queryBuilder
+      .where('widget_values.question_id = :questionId', { questionId })
+      .andWhere('widget_values.attribute_name IN (:...valuesToCheck)', { valuesToCheck: attributes })
+      .getMany();
+
+    return queryResult?.length > 0;
+  }
+
   private async saveTemplateItemData(templateItems: CreateTemplateItemQuestionDto[], templateId: number) {
     templateItems.map((a) => (a.templateId = templateId));
     const arrayItems = [];
