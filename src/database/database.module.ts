@@ -5,9 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 
 @Global()
 @Module({
-  imports: [
-    ConfigModule.forRoot(configModuleOptions),
-    TypeOrmModule.forRootAsync(typeOrmConfigAsync),
-  ],
+  imports: [ConfigModule.forRoot(configModuleOptions), TypeOrmModule.forRootAsync(typeOrmConfigAsync)],
 })
 export class DatabaseModule {}

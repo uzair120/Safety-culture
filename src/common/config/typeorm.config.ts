@@ -1,8 +1,5 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  TypeOrmModuleAsyncOptions,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // import { GlobalSubscribers } from 'subscribers/global.subscriber';
 import { CONSTANTS } from '../../app.constants';
 import DatabaseLogger from '../../databaseLogger';
@@ -54,7 +51,6 @@ export default class TypeOrmConfig {
 export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
   inject: [ConfigService],
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<TypeOrmModuleOptions> => TypeOrmConfig.getOrmConfig(configService),
+  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> =>
+    TypeOrmConfig.getOrmConfig(configService),
 };

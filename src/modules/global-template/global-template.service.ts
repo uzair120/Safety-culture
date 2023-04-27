@@ -3,18 +3,14 @@ import { CreateGlobalTemplateDto } from './dto/create-global-template.dto';
 import { UpdateGlobalTemplateDto } from './dto/update-global-template.dto';
 import { TemplateService } from '../template/template.service';
 import { TemplateItemService } from '../template-items/template-items.service';
-import { CreateTemplateItemDto, UpdateTemplateItemDto } from '../template-items/dto';
+import { UpdateTemplateItemDto } from '../template-items/dto';
 import { CreateTemplateItemQuestionDto } from './dto/template-item-question.dto';
 import { QuestionService } from '../questions/questions.service';
 import { TemplateItemType } from '../template-items/enums';
 import { constructErrorResponse, constructSuccessResponse } from 'src/common';
-import * as Joi from 'joi';
 import { getAttributesByType, schema } from '../widgets/validation';
 import { WidgetService } from '../widgets/widgets.service';
-import { throwError } from 'rxjs';
-import { WidgetValue } from '../widget_values/entities/widget_value.entity';
 import { WidgetValuesService } from '../widget_values/widget_values.service';
-import { Question } from '../questions/entities/question.entity';
 
 @Injectable()
 export class GlobalTemplateService {
@@ -62,18 +58,28 @@ export class GlobalTemplateService {
         throw Error(result.error.message);
       }
       const attributes = getAttributesByType(question.type);
+
+      await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
+
+      const properties = [];
+
       for (let index = 0; index < attributes.length; index++) {
         const element = attributes[index];
-        await this.widgetValueService.createInternal({
+        const data = await this.widgetValueService.createInternal({
           questionId: question.id,
           attributeName: element,
           attributeValue: createTemplateItemDto.question[element],
         });
+
+        properties.push({ [data?.attributeName]: data?.attributeValue });
       }
+
+      question.properties = properties;
       templateItem.questions = question;
     }
     return templateItem;
   }
+
   private async saveTemplateItemData(templateItems: CreateTemplateItemQuestionDto[], templateId: number) {
     templateItems.map((a) => (a.templateId = templateId));
     const arrayItems = [];
