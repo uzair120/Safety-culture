@@ -69,6 +69,20 @@ export class AnswersService {
     }
   }
 
+  async findByMetaId(inspectionMetaId: number) {
+    this.logger.log(`Fetching answer with inspectionMetaId ${inspectionMetaId}`);
+
+    try {
+      const data = await this.answerRepository.findOne({ where: { inspectionMetaId } });
+
+      this.logger.log(`Fetched answer with inspectionMetaId ${inspectionMetaId} successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching answer with inspectionMetaId ${inspectionMetaId}`, error.stack);
+      return null;
+    }
+  }
+
   async update(id: number, updateAnswerDto: UpdateAnswerDto): Promise<ResponseDto> {
     this.logger.log(`Updating answer with id ${id}`);
 
