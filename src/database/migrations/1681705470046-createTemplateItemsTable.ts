@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class createTemplateItemsTable1681705470046
-  implements MigrationInterface
-{
+export class createTemplateItemsTable1681705470046 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
     CREATE TYPE template_item_type AS ENUM ('PAGE', 'SECTION', 'QUESTION')
