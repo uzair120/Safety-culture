@@ -66,22 +66,22 @@ export class GlobalTemplateService {
       }
       const attributes = getAttributesByType(question.type);
 
-      const attributesExists = await this.checkAttributesExists(question?.id, attributes);
+      await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
+
       const properties = [];
-      if (!attributesExists) {
-        await this.deleteAttribute(question?.id);
 
-        for (let index = 0; index < attributes.length; index++) {
-          const element = attributes[index];
-          const data = await this.widgetValueService.createInternal({
-            questionId: question.id,
-            attributeName: element,
-            attributeValue: createTemplateItemDto.question[element],
-          });
+      for (let index = 0; index < attributes.length; index++) {
+        const element = attributes[index];
+        const data = await this.widgetValueService.createInternal({
+          questionId: question.id,
+          attributeName: element,
+          attributeValue: createTemplateItemDto.question[element],
+        });
 
-          properties.push({ [data?.attributeName]: data?.attributeValue });
-        }
+        properties.push({ [data?.attributeName]: data?.attributeValue });
       }
+
+      question.properties = properties;
     }
     return templateItem;
   }

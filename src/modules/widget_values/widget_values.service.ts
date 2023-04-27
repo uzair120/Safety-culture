@@ -211,4 +211,16 @@ export class WidgetValuesService {
       });
     }
   }
+
+  async deleteByCriteria(criteria: FetchWidgetValueCriteria) {
+    this.logger.log(`Deleting widget value with criteria: ${criteria} }`);
+    try {
+      await this.widgetValuesRepository.delete(criteria);
+      this.logger.log(`Deleted widget value with criteria ${criteria} `);
+      return true;
+    } catch (error) {
+      this.logger.error(`Error occurred while deleting widget values with criteria ${criteria} `, error.stack);
+      return error;
+    }
+  }
 }
