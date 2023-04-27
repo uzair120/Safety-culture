@@ -70,7 +70,7 @@ export function setupSwagger(app: INestApplication): void {
       persistAuthorization: true,
       filter: true,
       validatorUrl: null,
-      defaultModelsExpandDepth: -1, // to hide all DTO schemas from Swagger
+      defaultModelsExpandDepth: 1, // to hide all DTO schemas from Swagger
     },
     customSiteTitle: 'iAuditor APP API Documentation',
   };
