@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { InspectionMeta } from './entities/inspection-meta.entity';
 import { CreateInspectionMetaDto, UpdateInspectionMetaDto } from './dto';
+import { AnswersService } from '../answers/answers.service';
 
 @Injectable()
 export class InspectionMetaService {
@@ -12,6 +13,7 @@ export class InspectionMetaService {
   constructor(
     @InjectRepository(InspectionMeta)
     private readonly inspectionMetaRepository: Repository<InspectionMeta>,
+    private readonly answersService: AnswersService,
   ) {}
 
   async create(createInspectionMetaDto: CreateInspectionMetaDto): Promise<ResponseDto> {
@@ -22,6 +24,13 @@ export class InspectionMetaService {
       this.logger.log(
         `Inspection metadata with template_id ${createInspectionMetaDto.templateId} created successfully`,
       );
+      if (createInspectionMetaDto.createAnswerDto && createInspectionMetaDto.createAnswerDto.length > 0) {
+        for (let index = 0; index < createInspectionMetaDto.createAnswerDto.length; index++) {
+          const answer = createInspectionMetaDto.createAnswerDto[index];
+          answer.inspectionMetaId = data.id;
+          await this.answersService.create(answer);
+        }
+      }
       return constructSuccessResponse(data);
     } catch (error) {
       this.logger.error(
@@ -58,6 +67,10 @@ export class InspectionMetaService {
           message: 'Inspection metadata not found',
         });
       }
+      // else{
+      // const answers = await this.answersService.findByMetaId(data.id);
+      // data['answers'] = answers;
+      // }
 
       this.logger.log(`Fetched inspection metadata with id ${id} successfully`);
       return constructSuccessResponse(data);

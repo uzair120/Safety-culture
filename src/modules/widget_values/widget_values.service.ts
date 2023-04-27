@@ -212,6 +212,25 @@ export class WidgetValuesService {
     }
   }
 
+  async fetchByCriteriaInternal(criteria: FetchWidgetValueCriteria) {
+    this.logger.log(`Fetching widget values with criteria ${JSON.stringify(criteria)}`);
+
+    try {
+      const widgetValues = await this.widgetValuesRepository.find({
+        where: criteria,
+      });
+
+      this.logger.log(`Fetched ${widgetValues.length} widget values with criteria ${JSON.stringify(criteria)}`);
+      return widgetValues;
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while fetching widget values with criteria ${JSON.stringify(criteria)}`,
+        error.stack,
+      );
+      return [];
+    }
+  }
+
   async deleteByCriteria(criteria: FetchWidgetValueCriteria) {
     this.logger.log(`Deleting widget value with criteria: ${criteria} }`);
     try {

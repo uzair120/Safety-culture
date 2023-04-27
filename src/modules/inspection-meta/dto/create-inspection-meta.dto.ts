@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsNotEmpty, IsDate } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsDate, IsOptional } from 'class-validator';
+import { CreateAnswerDto } from 'src/modules/answers/dto';
 
 export class CreateInspectionMetaDto {
   @ApiProperty()
@@ -16,4 +17,9 @@ export class CreateInspectionMetaDto {
   @IsDate()
   @IsNotEmpty()
   inspectedOn: Date;
+
+  @ApiProperty()
+  @IsDate()
+  @IsOptional()
+  createAnswerDto?: CreateAnswerDto[];
 }
