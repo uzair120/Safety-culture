@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { TemplateItem } from '../../../modules/template-items/entities/template-item.entity';
+import { InspectionMeta } from 'src/modules/inspection-meta/entities/inspection-meta.entity';
 
 @Entity({ name: 'templates' })
 export class Template extends CustomBaseEntity {
@@ -50,4 +51,9 @@ export class Template extends CustomBaseEntity {
 
   @OneToMany(() => TemplateItem, (item) => item.template, { eager: true })
   templateItems: TemplateItem[];
+
+  @OneToOne(() => InspectionMeta, (inspectionMeta) => inspectionMeta.template, {
+    nullable: false,
+  })
+  inspectionMeta: InspectionMeta;
 }

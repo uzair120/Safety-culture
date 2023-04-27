@@ -13,6 +13,8 @@ import { ResponsesNamesModule } from './modules/responses-names/responses-names.
 import { ResponsesModule } from './modules/responses/responses.module';
 import { McqsModule } from './modules/mcqs/mcqs.module';
 import { GlobalTemplateModule } from './modules/global-template/global-template.module';
+import { AnswersModule } from './modules/answers/answers.module';
+import { InspectionMetaModule } from './modules/inspection-meta/inspection-meta.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { GlobalTemplateModule } from './modules/global-template/global-template.
     ResponsesModule,
     McqsModule,
     GlobalTemplateModule,
+    AnswersModule,
+    InspectionMetaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -151,7 +151,7 @@ export const DELETE_RESPONSES_NAME = {
 export const GET_RESPONSES_NAME = {
   summary: 'Get a responses name',
   description: '',
-}
+};
 export const POST_CREATE_MCQ = {
   summary: 'Creates a new MCQ',
   description: '',
@@ -204,5 +204,55 @@ export const GET_RESPONSE = {
 
 export const GET_ALL_RESPONSES = {
   summary: 'Get all responses',
+  description: '',
+};
+
+export const POST_CREATE_ANSWER = {
+  summary: 'Creates a new answer',
+  description: '',
+};
+
+export const PATCH_UPDATE_ANSWER = {
+  summary: 'Updates an answer',
+  description: '',
+};
+
+export const DELETE_ANSWER = {
+  summary: 'Deletes an answer',
+  description: '',
+};
+
+export const GET_ANSWER = {
+  summary: 'Get an answer',
+  description: '',
+};
+
+export const GET_ALL_ANSWERS = {
+  summary: 'Get all answers',
+  description: '',
+};
+
+export const POST_CREATE_INSPECTION_META = {
+  summary: 'Creates a new inspection metadata',
+  description: '',
+};
+
+export const PATCH_UPDATE_INSPECTION_META = {
+  summary: 'Updates an inspection metadata',
+  description: '',
+};
+
+export const DELETE_INSPECTION_META = {
+  summary: 'Deletes an inspection metadata',
+  description: '',
+};
+
+export const GET_INSPECTION_META = {
+  summary: 'Get an inspection metadata',
+  description: '',
+};
+
+export const GET_ALL_INSPECTION_METAS = {
+  summary: 'Get all inspection metadata',
   description: '',
 };

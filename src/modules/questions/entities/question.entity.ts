@@ -6,6 +6,7 @@ import { Widget } from '../../widgets/entities/widget.entity';
 import { WidgetValue } from '../../../modules/widget_values/entities/widget_value.entity';
 import { ResponsesName } from '../../../modules/responses-names/entities/responses-name.entity';
 import { MCQ } from '../../mcqs/entities/mcq.entity';
+import { Answer } from 'src/modules/answers/entities/answer.entity';
 
 @Entity({ name: 'questions' })
 export class Question extends CustomBaseEntity {
@@ -52,4 +53,7 @@ export class Question extends CustomBaseEntity {
 
   @OneToMany(() => MCQ, (mcq) => mcq.question, { eager: false })
   mcqs?: MCQ[];
+
+  @OneToMany(() => Answer, (answer) => answer.question, { eager: false })
+  answers?: Answer[];
 }
