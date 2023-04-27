@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateManyOptions } from 'typeorm';
 import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { Question } from './entities/question.entity';
 import { CreateQuestionDto, UpdateQuestionDto } from './dto';
@@ -33,7 +33,15 @@ export class QuestionService {
     try {
       let data: any;
       if (createQuestionDto?.id) {
-        data = await this.questionRepository.update(createQuestionDto.id, createQuestionDto);
+        const newRefinedQuestionDto: UpdateQuestionDto = {
+          id: createQuestionDto.id,
+          itemId: createQuestionDto.itemId,
+          format: createQuestionDto.format,
+          widgetId: createQuestionDto.widgetId,
+          required: createQuestionDto.required,
+        };
+        await this.questionRepository.update(newRefinedQuestionDto.id, newRefinedQuestionDto);
+        data = await this.questionRepository.findOne({ where: { id: createQuestionDto.id } });
       } else {
         data = await this.questionRepository.save(createQuestionDto);
       }
