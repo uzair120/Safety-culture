@@ -11,6 +11,7 @@ import { constructErrorResponse, constructSuccessResponse } from 'src/common';
 import { getAttributesByType, schema } from '../widgets/validation';
 import { WidgetService } from '../widgets/widgets.service';
 import { WidgetValuesService } from '../widget_values/widget_values.service';
+import { TemplateItem } from '../template-items/entities/template-item.entity';
 
 @Injectable()
 export class GlobalTemplateService {
@@ -50,28 +51,26 @@ export class GlobalTemplateService {
     if (createTemplateItemDto.question) {
       createTemplateItemDto.question.itemId = templateItem.id;
       const question = await this.questionService.createInternal(createTemplateItemDto.question);
-      const widget = question.widget;
+      const widget = await this.widgetService.findOneInternal(question.widgetId);
       delete question.widget;
+      delete question.values;
       question.type = widget.type;
       const result = schema.validate(question);
       if (result.error) {
         throw Error(result.error.message);
       }
-      const attributes = getAttributesByType(question.type);
-
+      const attributes = getAttributesByType(question.type, question.format);
       await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
-
-      const properties = [];
-
+      const properties = {};
       for (let index = 0; index < attributes.length; index++) {
         const element = attributes[index];
         const data = await this.widgetValueService.createInternal({
           questionId: question.id,
           attributeName: element,
-          attributeValue: createTemplateItemDto.question[element],
+          attributeValue: createTemplateItemDto.question['properties'][element],
         });
 
-        properties.push({ [data?.attributeName]: data?.attributeValue });
+        properties[data?.attributeName] = data?.attributeValue;
       }
 
       question.properties = properties;
@@ -104,6 +103,10 @@ export class GlobalTemplateService {
   async findOne(id: number) {
     const template = await this.templateService.findOneInternal(id);
     let children = template.templateItems.filter((template) => template.parentId !== null);
+    for (let index = 0; index < children.length; index++) {
+      const element = children[index];
+      await this.enhanceQuestionData(element);
+    }
     const parent = template.templateItems.filter((template) => template.parentId === null);
     parent.map((template) => {
       children.map((template) => {
@@ -113,9 +116,31 @@ export class GlobalTemplateService {
       const child = children.filter((a) => a.parentId == template.id);
       if (child && child.length > 0) template['children'] = child;
     });
-    return { ...template, templateItems: parent };
+    delete template.templateItems;
+    return { template, templateItems: parent };
   }
 
+  private async enhanceQuestionData(templateItem: TemplateItem) {
+    if (templateItem.type == TemplateItemType.QUESTION) {
+      const question = templateItem.questions;
+      const widget = await this.widgetService.findOneInternal(question.widgetId);
+      delete question.widget;
+      delete question.values;
+      question['type'] = widget.type;
+      const result = schema.validate(question);
+      if (result.error) {
+        throw Error(result.error.message);
+      }
+      const widgetValues = await this.widgetValueService.fetchByCriteriaInternal({ questionId: question?.id });
+      const properties = {};
+      for (let index = 0; index < widgetValues.length; index++) {
+        const data = widgetValues[index];
+        properties[data?.attributeName] = data?.attributeValue;
+      }
+      question['properties'] = properties;
+      templateItem.questions = question;
+    }
+  }
   update(id: number, updateGlobalTemplateDto: UpdateGlobalTemplateDto) {
     return `This action updates a #${id} globalTemplate`;
   }

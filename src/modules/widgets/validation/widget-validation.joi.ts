@@ -90,7 +90,7 @@ const schema = Joi.object({
 
 export { schema, getAttributesByType };
 
-const getAttributesByType = (type: WidgetType) => {
+const getAttributesByType = (type: WidgetType, format: String = null) => {
   if (type == WidgetType.INSTRUCTION || type == WidgetType.ANNOTATION) {
     return ['imageUrl'];
   } else if (type == WidgetType.SLIDER) {
@@ -98,6 +98,7 @@ const getAttributesByType = (type: WidgetType) => {
   } else if (type == WidgetType.DATE_TIME) {
     return ['date', 'time'];
   } else if (type == WidgetType.NUMBER) {
+    if (format == 'NUMBER') return [];
     return ['condition', 'greater', 'smaller', 'dUnit'];
   } else {
     return [];
