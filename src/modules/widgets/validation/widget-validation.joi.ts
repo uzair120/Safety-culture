@@ -50,7 +50,15 @@ const schema = Joi.object({
   })
   .when(Joi.object({ type: Joi.number().valid(WidgetType.DOCUMENT) }).unknown(), {
     then: Joi.object({
-      format: Joi.string().required(),
+      format: Joi.string()
+        .required()
+        .custom((value, helpers) => {
+          const num = Number(value);
+          if (isNaN(num) || !isFinite(num)) {
+            return helpers.error('Invalid format associated with widget.');
+          }
+          return value;
+        }, 'custom number validation'),
     }),
   })
   .when(Joi.object({ type: Joi.number().valid(WidgetType.TEXT_ANSWER) }).unknown(), {

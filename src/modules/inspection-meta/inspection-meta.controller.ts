@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { InspectionMetaService } from './inspection-meta.service';
 import { CreateInspectionMetaDto } from './dto/create-inspection-meta.dto';
 import { UpdateInspectionMetaDto } from './dto/update-inspection-meta.dto';
@@ -11,22 +11,25 @@ import {
   PATCH_UPDATE_INSPECTION_META,
   DELETE_INSPECTION_META,
 } from '../../swagger/SwaggerAPIDetails';
+import { FetchInspectionCriteria } from './interfaces/fetchInspectionCriteria';
 
 @SwaggerController('InspectionMeta')
 @Controller('inspection-meta')
 export class InspectionMetaController {
   constructor(private readonly inspectionMetaService: InspectionMetaService) {}
 
-  @SwaggerSuccessResponse(CreateInspectionMetaDto, GET_ALL_INSPECTION_METAS)
-  @Get()
-  findAll(): Promise<ResponseDto> {
-    return this.inspectionMetaService.findAll();
-  }
+  // @SwaggerSuccessResponse(CreateInspectionMetaDto, GET_ALL_INSPECTION_METAS)
+  // @Get()
+  // findAll(): Promise<ResponseDto> {
+  //   return this.inspectionMetaService.findAll();
+  // }
 
   @SwaggerSuccessResponse(CreateInspectionMetaDto, GET_INSPECTION_META)
-  @Get(':id')
-  findOne(@Param('id') id: number): Promise<ResponseDto> {
-    return this.inspectionMetaService.findOne(id);
+  @Get()
+  findOne(@Query() criteria: FetchInspectionCriteria): Promise<ResponseDto> {
+    console.log('HERE');
+
+    return this.inspectionMetaService.findByCriteria(criteria);
   }
 
   @SwaggerSuccessResponse(CreateInspectionMetaDto, POST_CREATE_INSPECTION_META)

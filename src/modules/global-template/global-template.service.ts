@@ -64,17 +64,19 @@ export class GlobalTemplateService {
       const properties = {};
       for (let index = 0; index < attributes.length; index++) {
         const element = attributes[index];
-        const data = await this.widgetValueService.createInternal({
-          questionId: question.id,
-          attributeName: element,
-          attributeValue: createTemplateItemDto.question['properties'][element],
-        });
+        if (createTemplateItemDto?.question['properties'][element]) {
+          const data = await this.widgetValueService.createInternal({
+            questionId: question.id,
+            attributeName: element,
+            attributeValue: createTemplateItemDto.question['properties'][element],
+          });
 
-        properties[data?.attributeName] = data?.attributeValue;
+          properties[data?.attributeName] = data?.attributeValue;
+        }
       }
 
       question.properties = properties;
-      templateItem.questions = question;
+      templateItem.question = question;
     }
     return templateItem;
   }
@@ -122,7 +124,7 @@ export class GlobalTemplateService {
 
   private async enhanceQuestionData(templateItem: TemplateItem) {
     if (templateItem.type == TemplateItemType.QUESTION) {
-      const question = templateItem.questions;
+      const question = templateItem.question;
       const widget = await this.widgetService.findOneInternal(question.widgetId);
       delete question.widget;
       delete question.values;
@@ -138,7 +140,7 @@ export class GlobalTemplateService {
         properties[data?.attributeName] = data?.attributeValue;
       }
       question['properties'] = properties;
-      templateItem.questions = question;
+      templateItem.question = question;
     }
   }
   update(id: number, updateGlobalTemplateDto: UpdateGlobalTemplateDto) {

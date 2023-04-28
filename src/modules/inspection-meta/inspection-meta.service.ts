@@ -5,6 +5,7 @@ import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '.
 import { InspectionMeta } from './entities/inspection-meta.entity';
 import { CreateInspectionMetaDto, UpdateInspectionMetaDto } from './dto';
 import { AnswersService } from '../answers/answers.service';
+import { FetchInspectionCriteria } from './interfaces/fetchInspectionCriteria';
 
 @Injectable()
 export class InspectionMetaService {
@@ -134,6 +135,32 @@ export class InspectionMetaService {
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while deleting the inspection metadata',
+        error: error.message,
+      });
+    }
+  }
+
+  async findByCriteria(criteria: FetchInspectionCriteria) {
+    this.logger.log(`Fetching inspection metadata with id ${criteria}`);
+
+    try {
+      const data = await this.inspectionMetaRepository.find({ where: criteria });
+
+      if (!data) {
+        this.logger.warn(`Inspection metadata with id ${criteria} not found`);
+        return constructErrorResponse({
+          status: HttpStatus.NOT_FOUND,
+          message: 'Inspection metadata not found',
+        });
+      }
+
+      this.logger.log(`Fetched inspection metadata with id ${criteria} successfully`);
+      return constructSuccessResponse(data);
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching inspection metadata with id ${criteria}`, error.stack);
+      return constructErrorResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'An error occurred while fetching the inspection metadata',
         error: error.message,
       });
     }
