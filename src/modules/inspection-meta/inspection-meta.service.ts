@@ -5,6 +5,9 @@ import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '.
 import { InspectionMeta } from './entities/inspection-meta.entity';
 import { CreateInspectionMetaDto, UpdateInspectionMetaDto } from './dto';
 import { AnswersService } from '../answers/answers.service';
+import { QuestionService } from '../questions/questions.service';
+import { TemplateItemService } from '../template-items/template-items.service';
+import { FetchInspectionCriteria } from './interfaces/fetchInspectionCriteria';
 
 @Injectable()
 export class InspectionMetaService {
@@ -14,6 +17,8 @@ export class InspectionMetaService {
     @InjectRepository(InspectionMeta)
     private readonly inspectionMetaRepository: Repository<InspectionMeta>,
     private readonly answersService: AnswersService,
+    private readonly questionService: QuestionService,
+    private readonly itemService: TemplateItemService,
   ) {}
 
   async create(createInspectionMetaDto: CreateInspectionMetaDto): Promise<ResponseDto> {
@@ -27,7 +32,16 @@ export class InspectionMetaService {
       if (createInspectionMetaDto.createAnswerDto && createInspectionMetaDto.createAnswerDto.length > 0) {
         for (let index = 0; index < createInspectionMetaDto.createAnswerDto.length; index++) {
           const answer = createInspectionMetaDto.createAnswerDto[index];
+
+          const questionData: any = await this.questionService.findOne(
+            createInspectionMetaDto.createAnswerDto[index].questionId,
+          );
+
+          const itemData: any = await this.itemService.findOne(questionData?.data?.itemId);
+
           answer.inspectionMetaId = data.id;
+          answer.questionTitle = itemData?.data?.title;
+
           await this.answersService.create(answer);
         }
       }
@@ -134,6 +148,31 @@ export class InspectionMetaService {
       return constructErrorResponse({
         status: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'An error occurred while deleting the inspection metadata',
+        error: error.message,
+      });
+    }
+  }
+  async findByCriteria(criteria: FetchInspectionCriteria) {
+    this.logger.log(`Fetching inspection metadata with id ${criteria}`);
+
+    try {
+      const data = await this.inspectionMetaRepository.find({ where: criteria });
+
+      if (!data) {
+        this.logger.warn(`Inspection metadata with id ${criteria} not found`);
+        return constructErrorResponse({
+          status: HttpStatus.NOT_FOUND,
+          message: 'Inspection metadata not found',
+        });
+      }
+
+      this.logger.log(`Fetched inspection metadata with id ${criteria} successfully`);
+      return constructSuccessResponse(data);
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching inspection metadata with id ${criteria}`, error.stack);
+      return constructErrorResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'An error occurred while fetching the inspection metadata',
         error: error.message,
       });
     }
