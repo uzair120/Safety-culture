@@ -26,4 +26,9 @@ export class CreateAnswerDto {
   @IsString()
   @IsOptional()
   notes?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  questionTitle?: string;
 }

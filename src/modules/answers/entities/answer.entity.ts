@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { Question } from '../../questions/entities/question.entity';
 import { InspectionMeta } from '../../inspection-meta/entities/inspection-meta.entity';
@@ -30,6 +30,11 @@ export class Answer extends CustomBaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   @IsString()
   notes: string;
+
+  @Column({ name: 'question_title', type: 'varchar', length: 255 })
+  @IsString()
+  @IsOptional()
+  questionTitle: string;
 
   @ManyToOne(() => Question, (question) => question.answers, {
     nullable: false,

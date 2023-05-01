@@ -30,6 +30,6 @@ export class InspectionMeta extends CustomBaseEntity {
   @JoinColumn({ name: 'template_id' })
   template: Template;
 
-  @OneToMany(() => Answer, (answer) => answer.question, { eager: true })
+  @OneToMany(() => Answer, (answer) => answer.inspectionMeta, { eager: true })
   answers?: Answer[];
 }
