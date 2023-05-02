@@ -43,6 +43,40 @@ export class ChoiceResponseService {
     }
   }
 
+  async getTemplateMCQs(): Promise<ResponseDto> {
+    this.logger.log(`Fetching all responses names`);
+
+    try {
+      const data = await this.choiceResponseRepository.find({ where: { isGlobal: true } });
+      for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        if (element.id) {
+          delete element.id;
+          delete element.createdAt;
+          delete element.updatedAt;
+          delete element.deletedAt;
+          delete element.questionId;
+          delete element.isGlobal;
+        }
+        if (element.options && element.options.length > 0) {
+          element.options.map((v) => {
+            delete v.id;
+            delete v.createdAt;
+            delete v.updatedAt;
+            delete v.deletedAt;
+            delete v.score;
+            return v;
+          });
+        }
+      }
+      this.logger.log(`Fetched all responses names successfully`);
+      return constructSuccessResponse(data);
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching all responses names`, error.stack);
+      return constructErrorResponse(error);
+    }
+  }
+
   async findOne(id: number): Promise<ResponseDto> {
     this.logger.log(`Fetching responses name with id ${id}`);
     try {

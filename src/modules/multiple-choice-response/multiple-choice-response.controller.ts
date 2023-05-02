@@ -7,6 +7,7 @@ import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorat
 import {
   DELETE_RESPONSES_NAME,
   GET_RESPONSES_NAME,
+  GET_TEMPLATE_RESPONSES_NAME,
   PATCH_UPDATE_RESPONSES_NAME,
   POST_CREATE_RESPONSES_NAME,
 } from '../../swagger/SwaggerAPIDetails';
@@ -38,5 +39,11 @@ export class ChoiceResponseController {
   @Delete(':id')
   delete(@Param('id') id: number): Promise<ResponseDto> {
     return this.choiceResponseService.delete(id);
+  }
+
+  @SwaggerSuccessResponse({}, GET_TEMPLATE_RESPONSES_NAME)
+  @Get()
+  templateMCQs(): Promise<ResponseDto> {
+    return this.choiceResponseService.getTemplateMCQs();
   }
 }

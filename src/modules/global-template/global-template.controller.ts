@@ -28,12 +28,6 @@ export class GlobalTemplateController {
     return this.globalTemplateService.create(createGlobalTemplateDto);
   }
 
-  @SwaggerSuccessResponse({}, GET_ALL_GLOBAL_TEMP)
-  @Get()
-  findAll() {
-    return this.globalTemplateService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.globalTemplateService.findOne(+id);
