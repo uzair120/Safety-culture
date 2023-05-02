@@ -9,9 +9,8 @@ import { TemplateItemsModule } from './modules/template-items/template-items.mod
 import { WidgetsModule } from './modules/widgets/widgets.module';
 import { QuestionsModule } from './modules/questions/questions.module';
 import { WidgetValuesModule } from './modules/widget_values/widget_values.module';
-import { ResponsesNamesModule } from './modules/responses-names/responses-names.module';
-import { ResponsesModule } from './modules/responses/responses.module';
-import { McqsModule } from './modules/mcqs/mcqs.module';
+import { ChoiceResponsesModule } from './modules/multiple-choice-response/multiple-choice-response.module';
+import { OptionsModule } from './modules/options/options.module';
 import { GlobalTemplateModule } from './modules/global-template/global-template.module';
 import { AnswersModule } from './modules/answers/answers.module';
 import { InspectionMetaModule } from './modules/inspection-meta/inspection-meta.module';
@@ -24,9 +23,8 @@ import { InspectionMetaModule } from './modules/inspection-meta/inspection-meta.
     TemplateItemsModule,
     QuestionsModule,
     WidgetValuesModule,
-    ResponsesNamesModule,
-    ResponsesModule,
-    McqsModule,
+    ChoiceResponsesModule,
+    OptionsModule,
     GlobalTemplateModule,
     AnswersModule,
     InspectionMetaModule,
