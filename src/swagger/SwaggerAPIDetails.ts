@@ -148,37 +148,42 @@ export const DELETE_RESPONSES_NAME = {
   description: '',
 };
 
+export const GET_TEMPLATE_RESPONSES_NAME = {
+  summary: 'Get Template MCQs',
+  description: '',
+};
+
 export const GET_RESPONSES_NAME = {
   summary: 'Get a responses name',
   description: '',
 };
-export const POST_CREATE_MCQ = {
-  summary: 'Creates a new MCQ',
+export const POST_CREATE_Options = {
+  summary: 'Creates a new Options',
   description: '',
 };
 
-export const PATCH_UPDATE_MCQ = {
-  summary: 'Updates an MCQ',
+export const PATCH_UPDATE_Options = {
+  summary: 'Updates an Options',
   description: '',
 };
 
-export const DELETE_MCQ = {
-  summary: 'Deletes an MCQ',
+export const DELETE_Options = {
+  summary: 'Deletes an Options',
   description: '',
 };
 
-export const GET_MCQ = {
-  summary: 'Get an MCQ',
+export const GET_Options = {
+  summary: 'Get an Options',
   description: '',
 };
 
-export const GET_ALL_MCQS = {
-  summary: 'Get all MCQs',
+export const GET_ALL_OptionsS = {
+  summary: 'Get all Options',
   description: '',
 };
 
-export const GET_MCQS_BY_QUESTION_ID = {
-  summary: 'Get all MCQs by Question ID',
+export const GET_OptionsS_BY_QUESTION_ID = {
+  summary: 'Get all Options by Question ID',
   description: '',
 };
 

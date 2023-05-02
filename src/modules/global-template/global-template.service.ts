@@ -96,10 +96,6 @@ export class GlobalTemplateService {
     return arrayItems;
   }
 
-  findAll() {
-    return `This action returns all globalTemplate`;
-  }
-
   async findOne(id: number) {
     const template = await this.templateService.findOneInternal(id);
     let children = template.templateItems.filter((template) => template.parentId !== null);
