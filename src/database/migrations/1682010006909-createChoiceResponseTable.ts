@@ -9,6 +9,7 @@ export class createChoiceResponsesTable1682010006909 implements MigrationInterfa
           name VARCHAR(255) DEFAULT 'MCQs',
           is_global BOOLEAN DEFAULT false,
           multi_select BOOLEAN DEFAULT false,
+          template_id INT DEFAULT NULL,
 
           created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
           updated_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -23,9 +24,22 @@ export class createChoiceResponsesTable1682010006909 implements MigrationInterfa
         REFERENCES questions(id)
         ON DELETE CASCADE
     `);
+
+    await queryRunner.query(`
+        ALTER TABLE multi_choice_response
+        ADD CONSTRAINT fk_multi_choice_response_template_id
+        FOREIGN KEY (template_id)
+        REFERENCES templates(id)
+        ON DELETE CASCADE
+    `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
+        ALTER TABLE multi_choice_response
+        DROP CONSTRAINT fk_multi_choice_response_template_id
+    `);
+
     await queryRunner.query(`
         ALTER TABLE multi_choice_response
         DROP CONSTRAINT fk_multi_choice_response_question_id

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ChoiceResponseService } from './multiple-choice-response.service';
 import { CreateChoiceResponseDto } from './dto/create-multiple-choice-response.dto';
 import { UpdateChoiceResponseDto } from './dto/update-multiple-choice-response.dto';
@@ -11,6 +11,7 @@ import {
   PATCH_UPDATE_RESPONSES_NAME,
   POST_CREATE_RESPONSES_NAME,
 } from '../../swagger/SwaggerAPIDetails';
+import { GetChoiceResponseByTemplateDto } from './dto';
 
 @SwaggerController('ChoiceResponse')
 @Controller('multi-choice-response')
@@ -42,8 +43,8 @@ export class ChoiceResponseController {
   }
 
   @SwaggerSuccessResponse({}, GET_TEMPLATE_RESPONSES_NAME)
-  @Get()
-  templateMCQs(): Promise<ResponseDto> {
-    return this.choiceResponseService.getTemplateMCQs();
+  @Get('template/:id?')
+  templateMCQs(@Query() getChoiceResponseByTemplateDto: GetChoiceResponseByTemplateDto): Promise<ResponseDto> {
+    return this.choiceResponseService.getTemplateMCQs(getChoiceResponseByTemplateDto.id);
   }
 }

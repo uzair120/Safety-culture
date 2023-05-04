@@ -9,10 +9,13 @@ export class ChoiceResponse extends CustomBaseEntity {
   @PrimaryGeneratedColumn({ unsigned: true })
   id: number;
 
-  @Column({ name: 'question_id', type: 'int', nullable: false })
+  @Column({ name: 'question_id', type: 'int', nullable: true })
   @IsNumber()
-  @IsNotEmpty()
   questionId: number;
+
+  @Column({ name: 'template_id', type: 'int', nullable: true })
+  @IsNumber()
+  templateId: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true, default: 'MCQs' })
   @IsString()
@@ -31,7 +34,7 @@ export class ChoiceResponse extends CustomBaseEntity {
     nullable: true,
   })
   @JoinColumn({ name: 'question_id' })
-  question: Question;
+  question?: Question;
 
   @OneToMany(() => OptionEntity, (options) => options.multiChoiceResponse, { eager: true })
   options: OptionEntity[];
