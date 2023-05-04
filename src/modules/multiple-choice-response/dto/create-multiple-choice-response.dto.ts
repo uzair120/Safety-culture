@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateChoiceResponseDto {
   @ApiProperty()
@@ -19,4 +19,9 @@ export class CreateChoiceResponseDto {
   @ApiProperty()
   @IsBoolean()
   multiSelect: boolean;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  templateId: number;
 }

@@ -43,11 +43,12 @@ export class ChoiceResponseService {
     }
   }
 
-  async getTemplateMCQs(): Promise<ResponseDto> {
+  async getTemplateMCQs(templateId: number): Promise<ResponseDto> {
     this.logger.log(`Fetching all responses names`);
 
     try {
-      const data = await this.choiceResponseRepository.find({ where: { isGlobal: true } });
+      let data = await this.choiceResponseRepository.find({ where: { isGlobal: true } });
+      //deleting the ids of global responses as these are not for any change.
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
         if (element.id) {
@@ -68,6 +69,10 @@ export class ChoiceResponseService {
             return v;
           });
         }
+      }
+      if (templateId) {
+        const tempData = await this.choiceResponseRepository.find({ where: { templateId: templateId } });
+        data = [...data, ...tempData];
       }
       this.logger.log(`Fetched all responses names successfully`);
       return constructSuccessResponse(data);
