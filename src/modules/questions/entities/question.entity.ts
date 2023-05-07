@@ -31,7 +31,7 @@ export class Question extends CustomBaseEntity {
   @IsBoolean()
   required: boolean;
 
-  @OneToOne(() => TemplateItem, (item) => item.questions, {
+  @OneToOne(() => TemplateItem, (item) => item.question, {
     nullable: false,
   })
   @JoinColumn({ name: 'item_id' })

@@ -71,5 +71,5 @@ export class TemplateItem extends CustomBaseEntity {
   template: Template;
 
   @OneToOne(() => Question, (question) => question.item, { eager: true })
-  questions: Question;
+  question: Question;
 }

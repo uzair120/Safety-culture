@@ -32,6 +32,30 @@ export class OptionsService {
     }
   }
 
+  async createInternal(createOptionsDto: UpdateOptionsDto) {
+    this.logger.log(`Creating Options with multiChoiceResponseId ${createOptionsDto.multiChoiceResponseId}`);
+
+    try {
+      let data = {};
+      if (createOptionsDto.id) {
+        await this.optionsRepository.update(createOptionsDto.id, createOptionsDto);
+        data = await this.optionsRepository.findOne({ where: { id: createOptionsDto.id } });
+      } else {
+        data = await this.optionsRepository.save(createOptionsDto);
+        this.logger.log(
+          `Options with multiChoiceResponseId ${createOptionsDto.multiChoiceResponseId} created successfully`,
+        );
+      }
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while creating Options with multiChoiceResponseId ${createOptionsDto.multiChoiceResponseId}`,
+        error.stack,
+      );
+      return error;
+    }
+  }
+
   async findAll(): Promise<ResponseDto> {
     this.logger.log(`Fetching all Optionss`);
 

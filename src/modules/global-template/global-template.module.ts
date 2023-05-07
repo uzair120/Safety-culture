@@ -12,6 +12,8 @@ import { WidgetValuesModule } from '../widget_values/widget_values.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Question } from '../questions/entities/question.entity';
 import { WidgetValue } from '../widget_values/entities/widget_value.entity';
+import { ChoiceResponsesModule } from '../multiple-choice-response/multiple-choice-response.module';
+import { OptionsModule } from '../options/options.module';
 
 @Module({
   controllers: [GlobalTemplateController],
@@ -23,6 +25,8 @@ import { WidgetValue } from '../widget_values/entities/widget_value.entity';
     QuestionsModule,
     WidgetsModule,
     WidgetValuesModule,
+    ChoiceResponsesModule,
+    OptionsModule,
   ],
 })
 export class GlobalTemplateModule {}
