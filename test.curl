@@ -7,9 +7,13 @@ curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
         "description": "string2",
         "image": "string2",
         "businessId": 11,
-        "createdBy": 11,
+        "createdBy": 1,
         "totalScore": 110,
-        "published": false
+        "published": false,
+        "deletedAt": null,
+        "id": 12,
+        "createdAt": "2023-05-07T13:02:48.872Z",
+        "updatedAt": "2023-05-07T13:02:48.872Z"
     },
     "templateItems": [
         {
@@ -33,31 +37,117 @@ curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
                                 "widgetId": 4,
                                 "format": "TEMP",
                                 "required": true,
-                                "itemId": 51,
+                                "itemId": 33,
                                 "type": "NUMBER",
                                 "properties": {
                                     "condition": "GreaterThan4",
-                                    "greater": 44,
+                                    "greater": "44",
+                                    "smaller": "undefined",
                                     "dUnit": "C4"
-                                }
-                            }
+                                },
+                                "deletedAt": null,
+                                "id": 16,
+                                "createdAt": "2023-05-07T13:02:48.902Z",
+                                "updatedAt": "2023-05-07T13:02:48.902Z"
+                            },
+                            "parentId": 32,
+                            "templateId": 12,
+                            "deletedAt": null,
+                            "id": 33,
+                            "createdAt": "2023-05-07T13:02:48.894Z",
+                            "updatedAt": "2023-05-07T13:02:48.894Z"
                         }
-                    ]
+                    ],
+                    "parentId": 31,
+                    "templateId": 12,
+                    "deletedAt": null,
+                    "id": 32,
+                    "createdAt": "2023-05-07T13:02:48.887Z",
+                    "updatedAt": "2023-05-07T13:02:48.887Z"
                 },
                 {
-                            "title": "children ques2",
-                            "type": "QUESTION",
-                            "orderIndex": 1,
-                            "status": true,
-                            "question": {
-                                "widgetId": 4,
-                                "format": "NUMBER",
-                                "required": true,
-                                "itemId": 51,
-                                "type": "NUMBER"
-                            }
-                        }
-            ]
+                    "title": "children ques2",
+                    "type": "QUESTION",
+                    "orderIndex": 1,
+                    "status": true,
+                    "question": {
+                        "widgetId": 13,
+                        "format": "NUMBER",
+                        "required": true,
+                        "itemId": 34,
+                        "type": "SET",
+                        "setData": {
+                            "name": "dfdaaaaa",
+                            "multiSelect": false,
+                            "questionId": 17,
+                            "templateId": 12,
+                            "id": 13,
+                            "deletedAt": null,
+                            "createdAt": "2023-05-07T13:02:55.104Z",
+                            "updatedAt": "2023-05-07T13:02:55.104Z",
+                            "isGlobal": false,
+                            "options": [
+                                {
+                                    "value": "Good",
+                                    "color": "#13855f",
+                                    "multiChoiceResponseId": 13,
+                                    "deletedAt": null,
+                                    "id": 30,
+                                    "createdAt": "2023-05-07T13:02:55.108Z",
+                                    "updatedAt": "2023-05-07T13:02:55.108Z",
+                                    "score": null
+                                },
+                                {
+                                    "value": "Fair",
+                                    "color": "#ffb000",
+                                    "multiChoiceResponseId": 13,
+                                    "deletedAt": null,
+                                    "id": 31,
+                                    "createdAt": "2023-05-07T13:02:55.112Z",
+                                    "updatedAt": "2023-05-07T13:02:55.112Z",
+                                    "score": null
+                                },
+                                {
+                                    "value": "Poor",
+                                    "color": "#c60022",
+                                    "multiChoiceResponseId": 13,
+                                    "deletedAt": null,
+                                    "id": 32,
+                                    "createdAt": "2023-05-07T13:02:55.115Z",
+                                    "updatedAt": "2023-05-07T13:02:55.115Z",
+                                    "score": null
+                                },
+                                {
+                                    "value": "N/A",
+                                    "color": "#707071",
+                                    "multiChoiceResponseId": 13,
+                                    "deletedAt": null,
+                                    "id": 33,
+                                    "createdAt": "2023-05-07T13:02:55.118Z",
+                                    "updatedAt": "2023-05-07T13:02:55.118Z",
+                                    "score": null
+                                }
+                            ]
+                        },
+                        "deletedAt": null,
+                        "id": 17,
+                        "createdAt": "2023-05-07T13:02:54.411Z",
+                        "updatedAt": "2023-05-07T13:02:54.411Z"
+                    },
+                    "parentId": 31,
+                    "templateId": 12,
+                    "deletedAt": null,
+                    "id": 34,
+                    "createdAt": "2023-05-07T13:02:54.409Z",
+                    "updatedAt": "2023-05-07T13:02:54.409Z"
+                }
+            ],
+            "templateId": 12,
+            "deletedAt": null,
+            "parentId": null,
+            "id": 31,
+            "createdAt": "2023-05-07T13:02:48.878Z",
+            "updatedAt": "2023-05-07T13:02:48.878Z"
         }
     ]
 }'

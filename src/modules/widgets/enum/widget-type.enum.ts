@@ -11,4 +11,6 @@ export enum WidgetType {
   SIGNATURE = 'SIGNATURE',
   LOCATION = 'LOCATION',
   INSTRUCTION = 'INSTRUCTION',
+  MCQs = 'MCQs',
+  SET = 'SET',
 }

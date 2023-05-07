@@ -8,5 +8,6 @@ import { ChoiceResponse } from './entities/multiple-choice-response.entity';
   imports: [TypeOrmModule.forFeature([ChoiceResponse])],
   controllers: [ChoiceResponseController],
   providers: [ChoiceResponseService],
+  exports: [ChoiceResponseService],
 })
 export class ChoiceResponsesModule {}

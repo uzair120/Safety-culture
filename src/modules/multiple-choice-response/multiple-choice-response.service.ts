@@ -30,6 +30,28 @@ export class ChoiceResponseService {
     }
   }
 
+  async createInternal(createChoiceResponseDto: UpdateChoiceResponseDto) {
+    this.logger.log(`Creating responses name with question_id ${createChoiceResponseDto.questionId}`);
+
+    try {
+      let data = {};
+      if (createChoiceResponseDto.id) {
+        await this.choiceResponseRepository.update(createChoiceResponseDto.id, createChoiceResponseDto);
+        data = await this.choiceResponseRepository.findOne({ where: { id: createChoiceResponseDto.id } });
+      } else {
+        data = await this.choiceResponseRepository.save(createChoiceResponseDto);
+        this.logger.log(`Responses name with question_id ${createChoiceResponseDto.questionId} created successfully`);
+      }
+      return data;
+    } catch (error) {
+      this.logger.error(
+        `Error occurred while creating responses name with question_id ${createChoiceResponseDto.questionId}`,
+        error.stack,
+      );
+      return error;
+    }
+  }
+
   async findAll(): Promise<ResponseDto> {
     this.logger.log(`Fetching all responses names`);
 
@@ -104,6 +126,18 @@ export class ChoiceResponseService {
         message: 'An error occurred while fetching the responses name',
         error: error.message,
       });
+    }
+  }
+  async findOneByQuestionIdInternal(questionId: number) {
+    this.logger.log(`Fetching responses name with questionId ${questionId}`);
+    try {
+      const data = await this.choiceResponseRepository.findOne({ where: { questionId: questionId } });
+
+      this.logger.log(`Fetched responses name with questionId ${questionId} successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching responses name with questionId ${questionId}`, error.stack);
+      return {};
     }
   }
   async update(id: number, updateChoiceResponseDto: UpdateChoiceResponseDto): Promise<ResponseDto> {

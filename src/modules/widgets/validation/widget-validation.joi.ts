@@ -97,6 +97,10 @@ const getAttributesByType = (type: WidgetType, format: String = null) => {
     return ['min', 'max', 'increment'];
   } else if (type == WidgetType.DATE_TIME) {
     return ['date', 'time'];
+  } else if (type == WidgetType.SET) {
+    return ['setData'];
+  } else if (type == WidgetType.MCQs) {
+    return ['mcqsData'];
   } else if (type == WidgetType.NUMBER) {
     if (format == 'NUMBER') return [];
     return ['condition', 'greater', 'smaller', 'dUnit'];

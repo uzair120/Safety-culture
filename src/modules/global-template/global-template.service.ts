@@ -12,6 +12,9 @@ import { getAttributesByType, schema } from '../widgets/validation';
 import { WidgetService } from '../widgets/widgets.service';
 import { WidgetValuesService } from '../widget_values/widget_values.service';
 import { TemplateItem } from '../template-items/entities/template-item.entity';
+import { WidgetType } from '../widgets/enum';
+import { ChoiceResponseService } from '../multiple-choice-response/multiple-choice-response.service';
+import { OptionsService } from '../options/options.service';
 
 @Injectable()
 export class GlobalTemplateService {
@@ -21,6 +24,8 @@ export class GlobalTemplateService {
     private readonly questionService: QuestionService,
     private readonly widgetService: WidgetService,
     private readonly widgetValueService: WidgetValuesService,
+    private readonly choiceResponseService: ChoiceResponseService,
+    private readonly optionsService: OptionsService,
   ) {}
 
   async create(createGlobalTemplateDto: CreateGlobalTemplateDto, createdBy: number = 1) {
@@ -60,21 +65,40 @@ export class GlobalTemplateService {
         throw Error(result.error.message);
       }
       const attributes = getAttributesByType(question.type, question.format);
-      await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
-      const properties = {};
-      for (let index = 0; index < attributes.length; index++) {
-        const element = attributes[index];
-        const data = await this.widgetValueService.createInternal({
+
+      if (question.type == WidgetType.SET || question.type == WidgetType.MCQs) {
+        const questionData = createTemplateItemDto.question[attributes[0]];
+        const mCQsData = await this.choiceResponseService.createInternal({
+          name: questionData.name || 'MCQs',
+          multiSelect: questionData.multiSelect,
           questionId: question.id,
-          attributeName: element,
-          attributeValue: createTemplateItemDto.question['properties'][element],
+          templateId: templateItem.templateId,
+          id: questionData.id,
         });
+        mCQsData.options = [];
+        for (let index = 0; index < questionData.options.length; index++) {
+          const element = questionData.options[index];
+          const option = await this.optionsService.createInternal({ ...element, multiChoiceResponseId: mCQsData.id });
+          mCQsData.options.push(option);
+        }
+        question[attributes[0]] = mCQsData;
+      } else {
+        await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
+        const properties = {};
+        for (let index = 0; index < attributes.length; index++) {
+          const element = attributes[index];
+          const data = await this.widgetValueService.createInternal({
+            questionId: question.id,
+            attributeName: element,
+            attributeValue: createTemplateItemDto.question['properties'][element],
+          });
 
-        properties[data?.attributeName] = data?.attributeValue;
+          properties[data?.attributeName] = data?.attributeValue;
+        }
+
+        question.properties = properties;
       }
-
-      question.properties = properties;
-      templateItem.questions = question;
+      templateItem.question = question;
     }
     return templateItem;
   }
@@ -118,7 +142,7 @@ export class GlobalTemplateService {
 
   private async enhanceQuestionData(templateItem: TemplateItem) {
     if (templateItem.type == TemplateItemType.QUESTION) {
-      const question = templateItem.questions;
+      const question = templateItem.question;
       const widget = await this.widgetService.findOneInternal(question.widgetId);
       delete question.widget;
       delete question.values;
@@ -127,14 +151,20 @@ export class GlobalTemplateService {
       if (result.error) {
         throw Error(result.error.message);
       }
-      const widgetValues = await this.widgetValueService.fetchByCriteriaInternal({ questionId: question?.id });
-      const properties = {};
-      for (let index = 0; index < widgetValues.length; index++) {
-        const data = widgetValues[index];
-        properties[data?.attributeName] = data?.attributeValue;
+      if (question['type'] == WidgetType.SET || question['type'] == WidgetType.MCQs) {
+        const mCQsData = await this.choiceResponseService.findOneByQuestionIdInternal(question.id);
+        const stringAttribute = question['type'] == WidgetType.SET ? 'setData' : 'mcqsData';
+        question[stringAttribute] = mCQsData;
+      } else {
+        const widgetValues = await this.widgetValueService.fetchByCriteriaInternal({ questionId: question?.id });
+        const properties = {};
+        for (let index = 0; index < widgetValues.length; index++) {
+          const data = widgetValues[index];
+          properties[data?.attributeName] = data?.attributeValue;
+        }
+        question['properties'] = properties;
       }
-      question['properties'] = properties;
-      templateItem.questions = question;
+      templateItem.question = question;
     }
   }
   update(id: number, updateGlobalTemplateDto: UpdateGlobalTemplateDto) {
