@@ -22,6 +22,10 @@ export class Question extends CustomBaseEntity {
   @IsNotEmpty()
   widgetId: number;
 
+  @Column({ name: 'multi_choice_id', type: 'int', nullable: true })
+  @IsNumber()
+  multiChoiceId: number;
+
   @Column({ type: 'varchar', length: 255, nullable: false })
   @IsString()
   @IsNotEmpty()
@@ -47,9 +51,16 @@ export class Question extends CustomBaseEntity {
   @OneToMany(() => WidgetValue, (widgetValue) => widgetValue.question, { eager: true })
   values?: WidgetValue[];
 
-  @OneToOne(() => ChoiceResponse, (choiceResponse) => choiceResponse.question, { nullable: true, eager: false })
-  multiChoiceResponse?: ChoiceResponse[];
+  // @OneToOne(() => ChoiceResponse, (choiceResponse) => choiceResponse.question, { nullable: true, eager: false })
+  // multiChoiceResponse?: ChoiceResponse[];
 
   @OneToMany(() => Answer, (answer) => answer.question, { eager: false })
   answers?: Answer[];
+
+  @ManyToOne(() => ChoiceResponse, (choiceResponse) => choiceResponse.questions, {
+    eager: false,
+    nullable: true,
+  })
+  @JoinColumn({ name: 'multi_choice_id' })
+  multiChoiceResponse: ChoiceResponse;
 }

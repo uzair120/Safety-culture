@@ -92,8 +92,28 @@ export class TemplateService {
   async findOneInternal(id: number) {
     this.logger.log(`Fetching template with id ${id}`);
 
-    const data = await this.templateRepository.findOne({ where: { id } });
-    return data;
+    try {
+      const data = await this.templateRepository.findOne({ where: { id } });
+
+      if (!data) {
+        this.logger.warn(`Template with id ${id} not found`);
+        return constructErrorResponse({
+          status: HttpStatus.NOT_FOUND,
+          message: 'Template not found',
+        });
+      }
+
+      this.logger.log(`Fetched template with id ${id} successfully`);
+
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching template with id ${id}`, error.stack);
+      return constructErrorResponse({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'An error occurred while fetching the template',
+        error: error.message,
+      });
+    }
   }
 
   async update(id: number, updateTemplateDto: UpdateTemplateDto): Promise<ResponseDto> {

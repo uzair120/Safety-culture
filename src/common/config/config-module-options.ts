@@ -10,11 +10,7 @@ export const configModuleOptions: ConfigModuleOptions = {
   load: [appConfig],
   validationSchema: Joi.object({
     NODE_ENV: Joi.string()
-      .valid(
-        CONSTANTS.ENVIRONMENT.TEST,
-        CONSTANTS.ENVIRONMENT.DEVELOPMENT,
-        CONSTANTS.ENVIRONMENT.PRODUCTION,
-      )
+      .valid(CONSTANTS.ENVIRONMENT.TEST, CONSTANTS.ENVIRONMENT.DEVELOPMENT, CONSTANTS.ENVIRONMENT.PRODUCTION)
       .default(CONSTANTS.ENVIRONMENT.DEVELOPMENT),
     APP_PORT: Joi.number().required(),
     CORS_WHITELIST: Joi.string().required(),

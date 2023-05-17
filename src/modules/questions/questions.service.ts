@@ -49,7 +49,7 @@ export class QuestionService {
       return data;
     } catch (error) {
       this.logger.error(`Error occurred while creating question with item_id ${createQuestionDto.itemId}`, error.stack);
-      return error;
+      throw Error(`Error occurred while creating question with item_id ${createQuestionDto.itemId}, error.message`);
     }
   }
 
