@@ -6,17 +6,25 @@ import { ResponseDto } from '../../common';
 import { SwaggerController, SwaggerSuccessResponse } from '../../swagger/decorators';
 import {
   DELETE_RESPONSES_NAME,
+  GET_RESPONSES,
   GET_RESPONSES_NAME,
   GET_TEMPLATE_RESPONSES_NAME,
   PATCH_UPDATE_RESPONSES_NAME,
   POST_CREATE_RESPONSES_NAME,
 } from '../../swagger/SwaggerAPIDetails';
 import { GetChoiceResponseByTemplateDto } from './dto';
+import { FetchMultiChoiceCriteria } from './interfaces';
 
-@SwaggerController('ChoiceResponse')
+@SwaggerController('MultiChoiceResponse')
 @Controller('multi-choice-response')
 export class ChoiceResponseController {
   constructor(private readonly choiceResponseService: ChoiceResponseService) {}
+
+  @SwaggerSuccessResponse({}, GET_RESPONSES)
+  @Get('criteria')
+  findByCriteria(@Query() criteria: FetchMultiChoiceCriteria): Promise<ResponseDto> {
+    return this.choiceResponseService.getMultiChoiceResponses(criteria);
+  }
 
   @SwaggerSuccessResponse(CreateChoiceResponseDto, GET_RESPONSES_NAME)
   @Get(':id')
@@ -27,7 +35,7 @@ export class ChoiceResponseController {
   @SwaggerSuccessResponse(CreateChoiceResponseDto, POST_CREATE_RESPONSES_NAME)
   @Post()
   create(@Body() createChoiceResponseDto: CreateChoiceResponseDto): Promise<ResponseDto> {
-    return this.choiceResponseService.create(createChoiceResponseDto);
+    return this.choiceResponseService.createMultiChoiceResponse(createChoiceResponseDto);
   }
 
   @SwaggerSuccessResponse(UpdateChoiceResponseDto, PATCH_UPDATE_RESPONSES_NAME)

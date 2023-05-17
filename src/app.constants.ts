@@ -12,14 +12,8 @@ export const CONSTANTS = {
     X_LANG: 'x-lang',
   },
 
-  DEV_SERVER: process.env.DEV_SERVER
-    ? process.env.DEV_SERVER
-    : 'https://dev.iauditor.me',
-  STAGE_SERVER: process.env.STAGE_SERVER
-    ? process.env.STAGE_SERVER
-    : 'https://stage.iauditor.me',
-  PROD_SERVER: process.env.PROD_SERVER
-    ? process.env.PROD_SERVER
-    : 'https://prod.iauditor.me',
+  DEV_SERVER: process.env.DEV_SERVER ? process.env.DEV_SERVER : 'https://dev.iauditor.me',
+  STAGE_SERVER: process.env.STAGE_SERVER ? process.env.STAGE_SERVER : 'https://stage.iauditor.me',
+  PROD_SERVER: process.env.PROD_SERVER ? process.env.PROD_SERVER : 'https://prod.iauditor.me',
   LOCAL: process.env.LOCAL ? process.env.LOCAL : 'http://localhost:3000',
 };
