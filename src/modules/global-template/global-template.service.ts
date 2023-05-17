@@ -15,6 +15,8 @@ import { TemplateItem } from '../template-items/entities/template-item.entity';
 import { WidgetType } from '../widgets/enum';
 import { ChoiceResponseService } from '../multiple-choice-response/multiple-choice-response.service';
 import { OptionsService } from '../options/options.service';
+import { Question } from '../questions/entities/question.entity';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class GlobalTemplateService {
@@ -66,13 +68,14 @@ export class GlobalTemplateService {
       }
       const attributes = getAttributesByType(question.type, question.format);
 
-      if (question.type == WidgetType.SET || question.type == WidgetType.MCQs) {
+      if (question.type == WidgetType.MCQs) {
         const questionData = createTemplateItemDto.question[attributes[0]];
-        const mCQsData = await this.choiceResponseService.createInternal({
+        const mCQsData: any = await this.choiceResponseService.createInternal({
           name: questionData.name || 'MCQs',
           multiSelect: questionData.multiSelect,
           questionId: question.id,
-          templateId: templateItem.templateId,
+          ...(!questionData.isGlobal ? { templateId: templateItem.templateId } : {}),
+          isGlobal: questionData.isGlobal,
           id: questionData.id,
         });
         mCQsData.options = [];
@@ -82,6 +85,11 @@ export class GlobalTemplateService {
           mCQsData.options.push(option);
         }
         question[attributes[0]] = mCQsData;
+        question.multiChoiceId = mCQsData.id;
+
+        await this.questionService.update(question.id, {
+          multiChoiceId: mCQsData.id,
+        });
       } else {
         await this.widgetValueService.deleteByCriteria({ questionId: question?.id });
         const properties = {};
@@ -152,8 +160,8 @@ export class GlobalTemplateService {
         throw Error(result.error.message);
       }
       if (question['type'] == WidgetType.SET || question['type'] == WidgetType.MCQs) {
-        const mCQsData = await this.choiceResponseService.findOneByQuestionIdInternal(question.id);
-        const stringAttribute = question['type'] == WidgetType.SET ? 'setData' : 'mcqsData';
+        const { data: mCQsData } = await this.choiceResponseService.findOne(question.multiChoiceId);
+        const stringAttribute = question['type'] === WidgetType.SET ? 'setData' : 'mcqsData';
         question[stringAttribute] = mCQsData;
       } else {
         const widgetValues = await this.widgetValueService.fetchByCriteriaInternal({ questionId: question?.id });

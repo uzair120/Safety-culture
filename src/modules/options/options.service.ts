@@ -52,7 +52,7 @@ export class OptionsService {
         `Error occurred while creating Options with multiChoiceResponseId ${createOptionsDto.multiChoiceResponseId}`,
         error.stack,
       );
-      return error;
+      throw Error(error);
     }
   }
 

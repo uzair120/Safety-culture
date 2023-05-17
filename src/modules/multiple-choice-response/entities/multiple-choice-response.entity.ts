@@ -30,11 +30,16 @@ export class ChoiceResponse extends CustomBaseEntity {
   @IsBoolean()
   multiSelect: boolean;
 
-  @ManyToOne(() => Question, (question) => question.multiChoiceResponse, {
+  // @ManyToOne(() => Question, (question) => question.multiChoiceResponse, {
+  //   nullable: true,
+  // })
+  // @JoinColumn({ name: 'question_id' })
+  // question?: Question;
+
+  @OneToMany(() => Question, (question) => question.multiChoiceResponse, {
     nullable: true,
   })
-  @JoinColumn({ name: 'question_id' })
-  question?: Question;
+  questions?: Question[];
 
   @OneToMany(() => OptionEntity, (options) => options.multiChoiceResponse, { eager: true })
   options: OptionEntity[];

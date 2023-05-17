@@ -153,6 +153,11 @@ export const GET_TEMPLATE_RESPONSES_NAME = {
   description: '',
 };
 
+export const GET_RESPONSES = {
+  summary: 'Get Responses',
+  description: '',
+};
+
 export const GET_RESPONSES_NAME = {
   summary: 'Get a responses name',
   description: '',

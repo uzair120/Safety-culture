@@ -68,8 +68,19 @@ export class WidgetService {
   }
   async findOneInternal(id: number) {
     this.logger.log(`Fetching widget with id ${id}`);
+    try {
+      const data = await this.widgetRepository.findOne({ where: { id } });
 
-    return await this.widgetRepository.findOne({ where: { id } });
+      if (!data) {
+        this.logger.warn(`Widget with id ${id} not found`);
+        throw new Error(`No widget found with id ${id}`);
+      }
+      this.logger.log(`Fetched widget with id ${id} successfully`);
+      return data;
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching widget with id ${id}`, error.stack);
+      throw new Error(`Error occurred while fetching widget with id ${id}, ${error.message}`);
+    }
   }
 
   async update(id: number, updateWidgetDto: UpdateWidgetDto): Promise<ResponseDto> {

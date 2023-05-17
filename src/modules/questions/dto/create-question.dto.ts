@@ -21,4 +21,9 @@ export class CreateQuestionDto {
   @IsBoolean()
   @IsOptional()
   required?: boolean;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  multiChoiceId?: number;
 }

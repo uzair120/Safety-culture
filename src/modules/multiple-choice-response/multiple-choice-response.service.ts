@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { ChoiceResponse } from './entities/multiple-choice-response.entity';
 import { CreateChoiceResponseDto, UpdateChoiceResponseDto } from './dto';
+import { OptionsService } from '../options/options.service';
+import { FetchMultiChoiceCriteria } from './interfaces';
 
 @Injectable()
 export class ChoiceResponseService {
   private readonly logger = new Logger(ChoiceResponseService.name);
 
   constructor(
+    private readonly optionsService: OptionsService,
     @InjectRepository(ChoiceResponse)
     private readonly choiceResponseRepository: Repository<ChoiceResponse>,
   ) {}
@@ -48,7 +51,9 @@ export class ChoiceResponseService {
         `Error occurred while creating responses name with question_id ${createChoiceResponseDto.questionId}`,
         error.stack,
       );
-      return error;
+      throw Error(
+        `Error occurred while creating responses name with question_id ${createChoiceResponseDto.questionId}`,
+      );
     }
   }
 
@@ -128,15 +133,15 @@ export class ChoiceResponseService {
       });
     }
   }
-  async findOneByQuestionIdInternal(questionId: number) {
-    this.logger.log(`Fetching responses name with questionId ${questionId}`);
+  async findOneByQuestionIdInternal(multiChoiceId: number) {
+    this.logger.log(`Fetching responses name with questionId ${multiChoiceId}`);
     try {
-      const data = await this.choiceResponseRepository.findOne({ where: { questionId: questionId } });
+      const data = await this.choiceResponseRepository.findOne({ where: { id: multiChoiceId } });
 
-      this.logger.log(`Fetched responses name with questionId ${questionId} successfully`);
+      this.logger.log(`Fetched responses name with questionId ${multiChoiceId} successfully`);
       return data;
     } catch (error) {
-      this.logger.error(`Error occurred while fetching responses name with questionId ${questionId}`, error.stack);
+      this.logger.error(`Error occurred while fetching responses name with questionId ${multiChoiceId}`, error.stack);
       return {};
     }
   }
@@ -185,6 +190,39 @@ export class ChoiceResponseService {
     } catch (error) {
       this.logger.error(`Error occurred while deleting responses name with id ${id}`, error.stack);
       return constructErrorResponse(error);
+    }
+  }
+
+  async createMultiChoiceResponse(mcqData: any): Promise<ResponseDto> {
+    try {
+      this.logger.log(`Creating multi choice response with body ${mcqData}`);
+      const multiChoiceData: any = await this.createInternal({
+        name: 'MCQs',
+        ...(!mcqData.global ? { templateId: mcqData.templateId } : {}),
+        isGlobal: mcqData.global,
+      });
+      multiChoiceData.options = [];
+      for (let index = 0; index < mcqData.options.length; index++) {
+        const element = mcqData.options[index];
+        const option = await this.optionsService.createInternal({
+          ...element,
+          multiChoiceResponseId: multiChoiceData.id,
+        });
+        multiChoiceData.options.push(option);
+      }
+      return constructSuccessResponse(multiChoiceData);
+    } catch (error) {
+      return constructErrorResponse(error);
+    }
+  }
+
+  async getMultiChoiceResponses(criteria: FetchMultiChoiceCriteria) {
+    try {
+      this.logger.log(`Fetching multi choice responses with criteria ${criteria}`);
+      const responses = await this.choiceResponseRepository.find({ where: criteria });
+      return constructSuccessResponse(responses);
+    } catch (error) {
+      this.logger.error(`Error occurred while fetching responses with criteria ${criteria}`, error.stack);
     }
   }
 }

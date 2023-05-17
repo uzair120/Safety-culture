@@ -62,7 +62,7 @@ export class WidgetValuesService {
         `Error occurred while creating widget value with attribute name ${createWidgetValueDto.attributeName} for question with id ${createWidgetValueDto.questionId}`,
         error.stack,
       );
-      return error;
+      throw Error(error.message);
     }
   }
 
