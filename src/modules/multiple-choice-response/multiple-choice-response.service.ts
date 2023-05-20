@@ -197,7 +197,7 @@ export class ChoiceResponseService {
     try {
       this.logger.log(`Creating multi choice response with body ${mcqData}`);
       const multiChoiceData: any = await this.createInternal({
-        name: 'MCQs',
+        name: mcqData?.name ? mcqData.name : 'MCQs',
         ...(!mcqData.global ? { templateId: mcqData.templateId } : {}),
         isGlobal: mcqData.global,
       });
