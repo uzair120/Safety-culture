@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsNumber, IsNotEmpty, IsDate } from 'class-validator';
-import { CustomBaseEntity } from 'src/common';
-import { Template } from 'src/modules/template/entities/template.entity';
-import { Answer } from 'src/modules/answers/entities/answer.entity';
+import { CustomBaseEntity } from '../../../common';
+import { Template } from '../../template/entities/template.entity';
+import { Answer } from '../../answers/entities/answer.entity';
 
 @Entity({ name: 'inspection_meta' })
 export class InspectionMeta extends CustomBaseEntity {

@@ -5,7 +5,7 @@ import { TemplateItem } from '../../template-items/entities/template-item.entity
 import { Widget } from '../../widgets/entities/widget.entity';
 import { WidgetValue } from '../../../modules/widget_values/entities/widget_value.entity';
 import { ChoiceResponse } from '../../multiple-choice-response/entities/multiple-choice-response.entity';
-import { Answer } from 'src/modules/answers/entities/answer.entity';
+import { Answer } from '../..//answers/entities/answer.entity';
 
 @Entity({ name: 'questions' })
 export class Question extends CustomBaseEntity {

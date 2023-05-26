@@ -5,12 +5,16 @@ import { Template } from './entities/template.entity';
 import { CreateTemplateDto, UpdateTemplateDto } from './dto';
 import { constructSuccessResponse, constructErrorResponse, ResponseDto } from '../../common';
 import { FetchTemplateCriteria } from './interfaces/fetchTemplateCriteria.interface';
+import { ChoiceResponseService } from '../multiple-choice-response/multiple-choice-response.service';
+import { formatDistanceToNow } from 'date-fns';
+import { classToPlain, instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class TemplateService {
   private readonly logger = new Logger(TemplateService.name);
 
   constructor(
+    private readonly choiceResponseService: ChoiceResponseService,
     @InjectRepository(Template)
     private readonly templateRepository: Repository<Template>,
   ) {}
@@ -41,6 +45,7 @@ export class TemplateService {
         data = await this.templateRepository.findOne({ where: { id: createTemplateDto.id } });
       } else {
         data = await this.templateRepository.save({ ...createTemplateDto, createdBy: createdBy });
+        await this.choiceResponseService.createDefaultMultiChoiceResponses(data.id);
       }
 
       this.logger.log(`Template with title ${createTemplateDto.title} created successfully`);
@@ -51,13 +56,26 @@ export class TemplateService {
     }
   }
 
-  async findAll(): Promise<ResponseDto> {
+  async findAll(page = 1, limit = 10): Promise<ResponseDto> {
     this.logger.log(`Fetching all templates`);
 
     try {
-      const data = await this.templateRepository.find();
+      let [data, total]: any = await this.templateRepository.findAndCount({
+        take: limit,
+        skip: (page - 1) * limit,
+        order: {
+          updatedAt: 'DESC',
+        },
+      });
+      data = data.map((template: any) => {
+        delete template.templateItems;
+        template['lastModified'] = formatDistanceToNow(template.updatedAt, { addSuffix: true });
+        template['lastPublished'] = formatDistanceToNow(template.updatedAt, { addSuffix: true });
+        return template;
+      });
+      data = instanceToPlain(data);
       this.logger.log(`Fetched all templates successfully`);
-      return constructSuccessResponse(data);
+      return constructSuccessResponse(data, total);
     } catch (error) {
       this.logger.error(`Error occurred while fetching all templates`, error.stack);
       return constructErrorResponse(error);
@@ -93,7 +111,16 @@ export class TemplateService {
     this.logger.log(`Fetching template with id ${id}`);
 
     try {
-      const data = await this.templateRepository.findOne({ where: { id } });
+      const data = await this.templateRepository
+        .createQueryBuilder('templates')
+        .leftJoinAndSelect('templates.templateItems', 'templateItem')
+        .leftJoinAndSelect('templateItem.question', 'question')
+        .where('templates.id = :id', { id: id })
+        .orderBy({
+          'templates.id': 'ASC',
+          'templateItem.orderIndex': 'ASC',
+        })
+        .getOne();
 
       if (!data) {
         this.logger.warn(`Template with id ${id} not found`);

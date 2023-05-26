@@ -41,6 +41,6 @@ export class ChoiceResponse extends CustomBaseEntity {
   })
   questions?: Question[];
 
-  @OneToMany(() => OptionEntity, (options) => options.multiChoiceResponse, { eager: true })
+  @OneToMany(() => OptionEntity, (options) => options.multiChoiceResponse, { eager: true, cascade: true })
   options: OptionEntity[];
 }
