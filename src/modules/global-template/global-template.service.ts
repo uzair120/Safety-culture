@@ -62,7 +62,7 @@ export class GlobalTemplateService {
       delete question.widget;
       delete question.values;
       question.type = widget.type;
-      const result = schema.validate(question);
+      const result = schema.validate(createTemplateItemDto.question);
       if (result.error) {
         throw Error(result.error.message);
       }
@@ -129,7 +129,8 @@ export class GlobalTemplateService {
   }
 
   async findOne(id: number) {
-    const template = await this.templateService.findOneInternal(id);
+    const template: any = await this.templateService.findOneInternal(id);
+
     let children = template.templateItems.filter((template) => template.parentId !== null);
     for (let index = 0; index < children.length; index++) {
       const element = children[index];
@@ -149,17 +150,17 @@ export class GlobalTemplateService {
   }
 
   private async enhanceQuestionData(templateItem: TemplateItem) {
-    if (templateItem.type == TemplateItemType.QUESTION) {
+    if (templateItem.type === TemplateItemType.QUESTION) {
       const question = templateItem.question;
       const widget = await this.widgetService.findOneInternal(question.widgetId);
       delete question.widget;
       delete question.values;
       question['type'] = widget.type;
-      const result = schema.validate(question);
-      if (result.error) {
-        throw Error(result.error.message);
-      }
-      if (question['type'] == WidgetType.SET || question['type'] == WidgetType.MCQs) {
+      // const result = schema.validate(question);
+      // if (result.error) {
+      //   throw Error(result.error.message);
+      // }
+      if (question['type'] === WidgetType.SET || question['type'] === WidgetType.MCQs) {
         const { data: mCQsData } = await this.choiceResponseService.findOne(question.multiChoiceId);
         const stringAttribute = question['type'] === WidgetType.SET ? 'setData' : 'mcqsData';
         question[stringAttribute] = mCQsData;

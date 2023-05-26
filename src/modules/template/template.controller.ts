@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
@@ -13,16 +13,18 @@ import {
   PATCH_UPDATE_TEMPLATE,
   POST_CREATE_TEMPLATE,
 } from '../../swagger/SwaggerAPIDetails';
+import { GetAllTemplates } from './dto/get-all-templates.dto';
 
 @SwaggerController('Template')
 @Controller('template')
 export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
 
-  @SwaggerSuccessResponse(CreateTemplateDto, GET_ALL_TEMPLATES)
+  @SwaggerSuccessResponse(GetAllTemplates, GET_ALL_TEMPLATES)
   @Get()
-  findAll(): Promise<ResponseDto> {
-    return this.templateService.findAll();
+  findAll(@Query('page') pagination: GetAllTemplates = { page: 1, limit: 10 }): Promise<ResponseDto> {
+    const { page = 1, limit = 10 } = pagination;
+    return this.templateService.findAll(Number(page), Number(limit));
   }
 
   @SwaggerSuccessResponse(CreateTemplateDto, GET_TEMPLATE)

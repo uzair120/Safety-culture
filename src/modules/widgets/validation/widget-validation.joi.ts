@@ -31,57 +31,71 @@ import { WidgetType } from '../enum';
 // });
 
 const schema = Joi.object({
-  type: Joi.number().valid(...Object.values(WidgetType)),
+  type: Joi.string().valid(...Object.values(WidgetType)),
 })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.SITE) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.SITE) }).unknown(), {
     then: Joi.object({}),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.CHECKBOX) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.CHECKBOX) }).unknown(), {
     then: Joi.object({}),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.MEDIA) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.MEDIA) }).unknown(), {
     then: Joi.object({}),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.SIGNATURE) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.SIGNATURE) }).unknown(), {
     then: Joi.object({}),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.LOCATION) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.LOCATION) }).unknown(), {
     then: Joi.object({}),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.DOCUMENT) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.DOCUMENT) }).unknown(), {
     then: Joi.object({
       format: Joi.string().required(),
     }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.TEXT_ANSWER) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.TEXT_ANSWER) }).unknown(), {
     then: Joi.object({
       format: Joi.string().required().valid('SHORT', 'PARAGRAPH'),
     }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.NUMBER) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.NUMBER) }).unknown(), {
     then: Joi.object({
       format: Joi.string().required().valid('NUMBER', 'TEMP'),
-    }),
+    })
+      .unknown()
+      .when(Joi.object({ format: 'TEMP' }).unknown(), {
+        then: Joi.object({
+          properties: Joi.object()
+            .pattern(
+              /^(condition|greater|smaller|dUnit)$/,
+              Joi.alternatives().try(Joi.string(), Joi.number()).optional(),
+            )
+            .pattern(/^([^condition|^greater|^smaller|^dUnit].*)$/, Joi.forbidden())
+            .required(),
+        }),
+      }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.DATE_TIME) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.DATE_TIME) }).unknown(), {
     then: Joi.object({
       date: Joi.string().required().valid('TRUE', 'FALSE'),
       time: Joi.string().required().valid('TRUE', 'FALSE'),
     }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.SLIDER) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.SLIDER) }).unknown(), {
     then: Joi.object({
-      min: Joi.string().required(),
-      max: Joi.string().required(),
-      increment: Joi.string().required(),
+      properties: Joi.object({
+        min: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+        max: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+        increment: Joi.alternatives().try(Joi.string(), Joi.number()).required(),
+      }),
     }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.ANNOTATION) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.ANNOTATION) }).unknown(), {
     then: Joi.object({
       imageUrl: Joi.string().required(),
     }),
   })
-  .when(Joi.object({ type: Joi.number().valid(WidgetType.INSTRUCTION) }).unknown(), {
+  .when(Joi.object({ type: Joi.string().valid(WidgetType.INSTRUCTION) }).unknown(), {
     then: Joi.object({
       imageUrl: Joi.string().required(),
     }),

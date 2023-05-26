@@ -6,6 +6,7 @@ import { ChoiceResponse } from './entities/multiple-choice-response.entity';
 import { CreateChoiceResponseDto, UpdateChoiceResponseDto } from './dto';
 import { OptionsService } from '../options/options.service';
 import { FetchMultiChoiceCriteria } from './interfaces';
+import { defaultMultiChoiceOptions } from './constants';
 
 @Injectable()
 export class ChoiceResponseService {
@@ -197,9 +198,10 @@ export class ChoiceResponseService {
     try {
       this.logger.log(`Creating multi choice response with body ${mcqData}`);
       const multiChoiceData: any = await this.createInternal({
-        name: 'MCQs',
-        ...(!mcqData.global ? { templateId: mcqData.templateId } : {}),
-        isGlobal: mcqData.global,
+        name: mcqData?.name ? mcqData.name : 'MCQs',
+        ...(!mcqData.isGlobal ? { templateId: mcqData.templateId } : {}),
+        isGlobal: mcqData.isGlobal,
+        ...(mcqData.id ? { id: mcqData.id } : {}),
       });
       multiChoiceData.options = [];
       for (let index = 0; index < mcqData.options.length; index++) {
@@ -219,10 +221,35 @@ export class ChoiceResponseService {
   async getMultiChoiceResponses(criteria: FetchMultiChoiceCriteria) {
     try {
       this.logger.log(`Fetching multi choice responses with criteria ${criteria}`);
-      const responses = await this.choiceResponseRepository.find({ where: criteria });
+      const responses = await this.choiceResponseRepository
+        .createQueryBuilder('multi_choice_response')
+        .leftJoinAndSelect('multi_choice_response.options', 'option')
+        .where(criteria)
+        .orderBy({
+          'multi_choice_response.id': 'ASC',
+          'option.id': 'ASC',
+        })
+        .getMany();
+
       return constructSuccessResponse(responses);
     } catch (error) {
       this.logger.error(`Error occurred while fetching responses with criteria ${criteria}`, error.stack);
+    }
+  }
+
+  async createDefaultMultiChoiceResponses(templateId: number) {
+    try {
+      this.logger.log(`Creating default multi choice responses with for template id: ${templateId}`);
+      defaultMultiChoiceOptions.forEach(async (optionSet) => {
+        const response: any = await this.createInternal({ templateId, isGlobal: false });
+        optionSet.forEach(async (option: any) => {
+          await this.optionsService.create({ ...option, multiChoiceResponseId: response.id });
+        });
+      });
+      this.logger.log(`Created default multi choice responses with for template id: ${templateId}`);
+    } catch (error) {
+      this.logger.log(`Failed creating default multi choice responses with for template id: ${templateId}`);
+      return error.message;
     }
   }
 }

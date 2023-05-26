@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typ
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { CustomBaseEntity } from '../../../common/entity/base.entity';
 import { TemplateItem } from '../../../modules/template-items/entities/template-item.entity';
-import { InspectionMeta } from 'src/modules/inspection-meta/entities/inspection-meta.entity';
+import { InspectionMeta } from '../../inspection-meta/entities/inspection-meta.entity';
 
 @Entity({ name: 'templates' })
 export class Template extends CustomBaseEntity {

@@ -31,4 +31,9 @@ export class CreateAnswerDto {
   @IsString()
   @IsOptional()
   questionTitle?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  questionColor?: string;
 }

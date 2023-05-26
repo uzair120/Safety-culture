@@ -36,6 +36,11 @@ export class Answer extends CustomBaseEntity {
   @IsOptional()
   questionTitle: string;
 
+  @Column({ name: 'question_color', type: 'varchar', length: 255 })
+  @IsString()
+  @IsOptional()
+  questionColor: string;
+
   @ManyToOne(() => Question, (question) => question.answers, {
     nullable: false,
   })

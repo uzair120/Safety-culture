@@ -87,7 +87,7 @@ curl --location 'http://localhost:3000/iauditor/api/v1/global-template' \
                             "updatedAt": "2023-05-07T13:02:55.104Z",
                             "isGlobal": false,
                             "options": [
-                                {
+                               {
                                     "value": "Good",
                                     "color": "#13855f",
                                     "multiChoiceResponseId": 13,
